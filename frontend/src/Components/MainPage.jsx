@@ -8,10 +8,10 @@ const MainPage = () => {
       <h1>
         Добро пожаловать в чат Максима Иноземцева
       </h1>
-    </header>
-    <button onClick={() => navigate('/login', { replace: false })}>
+      <button onClick={() => navigate('/login', { replace: false })}>
       Зарегистрироваться
-    </button>
+      </button>
+    </header>
     <Outlet />
   </>
   )
