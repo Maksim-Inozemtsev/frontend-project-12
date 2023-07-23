@@ -1,43 +1,75 @@
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Formik, Field, ErrorMessage } from 'formik';
+import { Navigate } from 'react-router-dom';
+import React, { useState } from 'react';
 import * as Yup from 'yup';
+import axios from 'axios';
+import { Button, Form, Alert } from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import apiPath from '../../routes.js';
+
+const { loginPage } = apiPath;
 
 const validationSchema = Yup.object().shape({
   username: Yup.string().required('Username is required'),
-  password: Yup.string().min(6, 'Password must be at least 6 characters').required('Password is required'),
+  password: Yup.string().min(5, 'Password must be at least 5 characters').required('Password is required'),
 });
 
-const RegistrationForm = () => {
-  const initialValues = {
-    username: '',
-    password: '',
+const LoginForm = () => {
+  const [redirect, setRedirect] = useState(false);
+  const [signed, setSigned] = useState(true);
+
+  const handleSubmit = async (values) => {
+    try {
+      const response = await axios.post(loginPage(), {
+        username: values.username,
+        password: values.password,
+      });
+      
+      if ('token' in response.data) {
+      const { token, username } = response.data;
+      localStorage.setItem('token', token);
+      localStorage.setItem('username', username);
+      setSigned(true);
+      setRedirect(true);
+      } else {
+        setSigned(false);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  const handleSubmit = (values) => {
-    // Здесь будет обработка отправки данных на сервер
-    console.log(values);
-  };
+  if (redirect) {
+    return <Navigate to="/" />;
+  }
 
   return (
-    <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
-      {({ isSubmitting }) => (
-        <Form>
-          <div>
-            <label htmlFor="username">Username:</label>
-            <Field type="text" id="username" name="username" />
-            <ErrorMessage name="username" component="div" />
-          </div>
-          <div>
-            <label htmlFor="password">Password:</label>
-            <Field type="password" id="password" name="password" />
-            <ErrorMessage name="password" component="div" />
-          </div>
-          <button type="submit" disabled={isSubmitting}>
-            Submit
-          </button>
-        </Form>
-      )}
-    </Formik>
+    <Formik initialValues={{ username: '', password: '' }} validationSchema={validationSchema} onSubmit={handleSubmit}>
+    {({ isSubmitting }) => (
+      <Form className="justify-content-center align-items-center">
+        <h1>Войти</h1>
+        {!signed && (
+          <Alert variant="danger">
+          Пользователь не найден!
+          </Alert>
+        )}
+      <Form.Group className="mb-3 w-50">
+        <Form.Label htmlFor="username">Username:</Form.Label>
+        <Field className="form-control" type="text" id="username" name="username" />
+        <ErrorMessage name="username" component="div" className='text-danger'/>
+      </Form.Group>
+      <Form.Group className="mb-3 w-50">
+        <Form.Label htmlFor="password">Password:</Form.Label>
+        <Field className="form-control" type="password" id="password" name="password" />
+        <ErrorMessage name="password" component="div" className='text-danger' />
+      </Form.Group>
+      <Button type="submit" disabled={isSubmitting}>
+        Войти
+      </Button>
+    </Form>
+    )}
+  </Formik>
   );
 };
 
-export default RegistrationForm;
+export default LoginForm;
