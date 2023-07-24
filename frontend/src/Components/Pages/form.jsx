@@ -17,14 +17,15 @@ const validationSchema = Yup.object().shape({
 const LoginForm = () => {
   const [redirect, setRedirect] = useState(false);
   const [signed, setSigned] = useState(true);
+  const [netWorkError, setnetWorkError] = useState(false);
 
-  const handleSubmit = async (values) => {
+  const myHandleSubmit = async (values) => {
     try {
       const response = await axios.post(loginPage(), {
         username: values.username,
         password: values.password,
       });
-      
+
       if ('token' in response.data) {
       const { token, username } = response.data;
       localStorage.setItem('token', token);
@@ -35,7 +36,7 @@ const LoginForm = () => {
         setSigned(false);
       }
     } catch (error) {
-      console.log(error);
+      setnetWorkError(error);
     }
   };
 
@@ -44,13 +45,13 @@ const LoginForm = () => {
   }
 
   return (
-    <Formik initialValues={{ username: '', password: '' }} validationSchema={validationSchema} onSubmit={handleSubmit}>
-    {({ isSubmitting }) => (
-      <Form className="justify-content-center align-items-center">
+    <Formik initialValues={{ username: '', password: '' }} validationSchema={validationSchema} onSubmit={myHandleSubmit}>
+    {({ handleSubmit, isSubmitting }) => (
+      <Form onSubmit={handleSubmit} className="justify-content-center align-items-center">
         <h1>Войти</h1>
         {!signed && (
           <Alert variant="danger">
-          Пользователь не найден!
+          {netWorkError || 'Пользователь не найден!'}
           </Alert>
         )}
       <Form.Group className="mb-3 w-50">

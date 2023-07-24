@@ -8,8 +8,12 @@ const MainPage = () => {
       <h1>
         Добро пожаловать в чат Максима Иноземцева
       </h1>
-      <button onClick={() => navigate('/login', { replace: false })}>
-      Зарегистрироваться
+      <button onClick={() => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('username');
+        navigate('/login', { replace: false })
+      }}>
+      Выйти
       </button>
     </header>
     <Outlet />
