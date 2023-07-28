@@ -1,20 +1,28 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import LoginForm from './Components/Pages/form';
+import { useContext } from 'react';
+import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom';
+import LoginForm from './Components/Pages/Form';
 import NotFoundPage from './Components/Pages/NotFoundPage';
 import MainPage from './Components/Pages/MainPage';
+import authContext, { ContextProvider } from './Components/context';
 import './App.css';
 
+const UseOutlet = () => {
+  const { loggedIn } = useContext(authContext);
+  return loggedIn ? <Outlet /> : <Navigate to="/login" />;
+}
+
 function App() {
-  const token = localStorage.getItem('token');
-  const isAuthenticated = !!token;
-  
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={isAuthenticated ? <MainPage /> : <Navigate to="/login" />} />
-        <Route path="/login" element={<LoginForm />} />
-        <Route path="*" element={<NotFoundPage />} />
-      </Routes>
+      <ContextProvider>
+        <Routes>
+          <Route path="/" element={<UseOutlet />}>
+            <Route path="" element={<MainPage />} />
+          </Route>
+          <Route path="/login" element={<LoginForm />} />
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+      </ContextProvider>
     </BrowserRouter> 
   );
 }

@@ -1,11 +1,12 @@
 import { Formik, Field, ErrorMessage } from 'formik';
 import { Navigate } from 'react-router-dom';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import * as Yup from 'yup';
 import axios from 'axios';
 import { Button, Form, Alert } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import apiPath from '../../routes.js';
+import authContext from '../context';
 
 const { loginPage } = apiPath;
 
@@ -17,7 +18,9 @@ const validationSchema = Yup.object().shape({
 const LoginForm = () => {
   const [redirect, setRedirect] = useState(false);
   const [signed, setSigned] = useState(true);
-  const [netWorkError, setnetWorkError] = useState(false);
+  const [netWorkError, setNetWorkError] = useState(false);
+  const context = useContext(authContext);
+  const { login } = context;
 
   const myHandleSubmit = async (values) => {
     try {
@@ -28,15 +31,15 @@ const LoginForm = () => {
 
       if ('token' in response.data) {
       const { token, username } = response.data;
-      localStorage.setItem('token', token);
-      localStorage.setItem('username', username);
-      setSigned(true);
+      login(token, username);
       setRedirect(true);
-      } else {
-        setSigned(false);
       }
     } catch (error) {
-      setnetWorkError(error);
+      if (error.response.status === 401) {
+        setSigned(false);
+      } else {
+        setNetWorkError(error.message);
+      }
     }
   };
 
@@ -49,11 +52,16 @@ const LoginForm = () => {
     {({ handleSubmit, isSubmitting }) => (
       <Form onSubmit={handleSubmit} className="justify-content-center align-items-center">
         <h1>Войти</h1>
-        {!signed && (
-          <Alert variant="danger">
-          {netWorkError || 'Пользователь не найден!'}
-          </Alert>
-        )}
+          {signed === false && (
+            <Alert variant="danger">
+              {'Пользователь не найден!'}
+            </Alert>
+          )}
+          {netWorkError !== false && (
+            <Alert variant="danger">
+              {netWorkError}
+            </Alert>
+          )}
       <Form.Group className="mb-3 w-50">
         <Form.Label htmlFor="username">Username:</Form.Label>
         <Field className="form-control" type="text" id="username" name="username" />
