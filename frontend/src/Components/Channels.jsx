@@ -7,7 +7,7 @@ const Channels = () => {
   return (
     <div className="mt-3">
       {channels.map((channel) => (
-        <div key={channel.id}>{channel}</div>
+        <div key={channel.id}>{channel.name}</div>
       ))}
     </div>
   );
