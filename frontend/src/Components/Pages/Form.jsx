@@ -29,11 +29,9 @@ const LoginForm = () => {
         password: values.password,
       });
 
-      if ('token' in response.data) {
       const { token, username } = response.data;
       login(token, username);
       setRedirect(true);
-      }
     } catch (error) {
       if (error.response.status === 401) {
         setSigned(false);

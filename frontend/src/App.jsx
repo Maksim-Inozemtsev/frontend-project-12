@@ -1,9 +1,11 @@
 import { useContext } from 'react';
+import { Provider } from 'react-redux';
 import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import LoginForm from './Components/Pages/Form';
 import NotFoundPage from './Components/Pages/NotFoundPage';
 import MainPage from './Components/Pages/MainPage';
 import authContext, { ContextProvider } from './Components/context';
+import store from './Slices/store.js';
 import './App.css';
 
 const UseOutlet = () => {
@@ -14,15 +16,17 @@ const UseOutlet = () => {
 function App() {
   return (
     <BrowserRouter>
-      <ContextProvider>
-        <Routes>
-          <Route path="/" element={<UseOutlet />}>
-            <Route path="" element={<MainPage />} />
-          </Route>
-          <Route path="/login" element={<LoginForm />} />
-          <Route path="*" element={<NotFoundPage />} />
-        </Routes>
-      </ContextProvider>
+      <Provider store={store}>
+        <ContextProvider>
+          <Routes>
+            <Route path="/" element={<UseOutlet />}>
+              <Route path="" element={<MainPage />} />
+            </Route>
+            <Route path="/login" element={<LoginForm />} />
+            <Route path="*" element={<NotFoundPage />} />
+          </Routes>
+        </ContextProvider>
+      </Provider>
     </BrowserRouter> 
   );
 }
