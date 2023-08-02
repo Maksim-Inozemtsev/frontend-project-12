@@ -73,6 +73,9 @@ const LoginForm = () => {
       <Button type="submit" disabled={isSubmitting}>
         Войти
       </Button>
+      <div className="text-center">
+        <span>Нет аккаунта?</span>
+        <a href="/signup">Регистрация</a></div>
     </Form>
     )}
   </Formik>
