@@ -1,28 +1,26 @@
 import React, { useContext } from 'react';
 import { Form, Button, Row, Col } from 'react-bootstrap';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Formik, Field } from 'formik';
-import { actions as messagesActions } from '../Slices/messagesSlice.js';
 import authContext from './context';
 import { SocketContext } from './socketContext';
 
 const MessageForm = () => {
   const { currentChannel } = useSelector(state => state.channelsReducer);
+  const { messages } = useSelector(state => state.messagesReducer);
   const context = useContext(authContext);
   const socket = useContext(SocketContext);
   const { currentUser } = context;
-  const dispatch = useDispatch();
   
-  const myHandleSubmit = (event) => {
-    event.preventDefault();
-    const newMessage = { body: `${event.target.value}`, channelId: `${currentChannel}`, username: `${currentUser}` }
-    dispatch(messagesActions.setMessage(newMessage));
+  const myHandleSubmit = (values, action) => {
+    const newMessage = { body: `${values.message}`, channelId: `${currentChannel}`, username: `${currentUser}` }
     socket.emit('newMessage', newMessage);
+    action.resetForm();
   };
 
   return (
     <Formik initialValues={{ message: '' }} onSubmit={myHandleSubmit}>
-    {({ handleSubmit, isSubmitting,  resetForm}) => (
+    {({ handleSubmit, isSubmitting, handleChange, values }) => (
     <Form onSubmit={handleSubmit}>
       <Row className="mb-3">
         <Col xs={12} md={8}>
@@ -31,10 +29,12 @@ const MessageForm = () => {
             type="text"
             id="message"
             placeholder="Введите сообщение..."
+            value={values.message}
+            onChange={handleChange}
           />
         </Col>
         <Col xs={12} md={4}>
-          <Button type="submit" variant="primary" className="w-100" disabled={isSubmitting} onClick={() => resetForm()}>
+          <Button type="submit" variant="primary" className="w-100" disabled={isSubmitting}>
             Отправить
           </Button>
         </Col>

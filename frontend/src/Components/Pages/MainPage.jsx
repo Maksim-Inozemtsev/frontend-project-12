@@ -27,10 +27,12 @@ const MainPage = () => {
       });
       const {
         channels,
+        currentChannelId,
         messages,
       } = data;
 
       dispatch(channelsActions.setChannels(channels));
+      dispatch(channelsActions.setCurrentChannel(currentChannelId));
       dispatch(messagesActions.setMessages(messages));
     };
 

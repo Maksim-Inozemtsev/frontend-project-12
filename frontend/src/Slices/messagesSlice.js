@@ -1,9 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { actions as channelsActions } from './channelsSlice.js';
 
 const initialState = {
   messages: [],
-  currentChannelMessages: [],
 };
 
 const messagesSlice = createSlice({
@@ -17,13 +15,6 @@ const messagesSlice = createSlice({
     setMessage(state, { payload }) {
       state.messages = [...state.messages, payload];
     },
-  },
-
-  extraReducers: (builder) => {
-    builder.addCase(channelsActions.setCurrentChannel, (state, action) => {
-      const currentMessages = state.messages.filter((item) => item.channelId === action.payload);
-      state.currentChannelMessages = currentMessages;
-    });
   },
 });
 
