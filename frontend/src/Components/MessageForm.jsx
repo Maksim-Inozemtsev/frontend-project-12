@@ -1,18 +1,15 @@
 import React, { useContext } from 'react';
 import { Form, Button, Row, Col } from 'react-bootstrap';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Formik, Field } from 'formik';
-import io from 'socket.io-client';
 import { actions as messagesActions } from '../Slices/messagesSlice.js';
-import channelsReducer from '../Slices/channelsSlice.js';
 import authContext from './context';
-
-const { currentChannel } = channelsReducer;
-
-const socket = io();
+import { SocketContext } from './socketContext';
 
 const MessageForm = () => {
+  const { currentChannel } = useSelector(state => state.channelsReducer);
   const context = useContext(authContext);
+  const socket = useContext(SocketContext);
   const { currentUser } = context;
   const dispatch = useDispatch();
   

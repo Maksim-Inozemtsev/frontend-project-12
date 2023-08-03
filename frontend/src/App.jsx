@@ -5,9 +5,15 @@ import LoginForm from './Components/Pages/LoginForm';
 import SignupForm from './Components/Pages/SignupForm';
 import NotFoundPage from './Components/Pages/NotFoundPage';
 import MainPage from './Components/Pages/MainPage';
+import { actions as messagesActions } from './Slices/messagesSlice.js';
 import authContext, { ContextProvider } from './Components/context';
+import { SocketContext, socket } from './Components/socketContext';
 import store from './Slices/store.js';
 import './App.css';
+
+socket.on('newMessage', (message) => {
+  store.dispatch(messagesActions.setMessage(message));
+});
 
 const UseOutlet = () => {
   const { loggedIn } = useContext(authContext);
@@ -18,6 +24,7 @@ function App() {
   return (
     <BrowserRouter>
       <Provider store={store}>
+      <SocketContext.Provider value={socket}>
         <ContextProvider>
           <Routes>
             <Route path="/" element={<UseOutlet />}>
@@ -28,6 +35,7 @@ function App() {
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </ContextProvider>
+        </SocketContext.Provider>
       </Provider>
     </BrowserRouter> 
   );
