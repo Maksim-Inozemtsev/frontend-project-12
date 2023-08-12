@@ -2,13 +2,23 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 
 const Messages = () => {
-  const { currentChannel } = useSelector((state) => state.channelsReducer);
+  const { channels, currentChannelId } = useSelector((state) => state.channelsReducer);
   const { messages } = useSelector((state) => state.messagesReducer);
+  const currentChannelMessages = messages.filter((el) => el.channelId === currentChannelId.toString());
+  const currentChannel = channels.filter((item) => item.id == currentChannelId);
+  let channelName;
+  if (currentChannel[0]) {
+    channelName = currentChannel[0].name;
+  } else {
+    channelName = 'Error';
+  }
 
   return (
     <div className="mt-3">
-      {messages.filter(el => el.channelId === currentChannel.toString())
-        .map((message) => <div key={message.id}>{message.username}: {message.body}</div>)}
+      <div className="bg-light mb-4 p-3 shadow-sm small">
+        <p className="m-0"><b># {channelName}</b></p><span className="text-muted">сообщений: {currentChannelMessages.length}</span>
+      </div>
+      {currentChannelMessages.map((message) => <div key={message.id}><b>{message.username}:</b> {message.body}</div>)}
     </div>
   );
 };

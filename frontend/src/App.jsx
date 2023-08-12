@@ -6,6 +6,7 @@ import SignupForm from './Components/Pages/SignupForm';
 import NotFoundPage from './Components/Pages/NotFoundPage';
 import MainPage from './Components/Pages/MainPage';
 import { actions as messagesActions } from './Slices/messagesSlice.js';
+import { actions as channelsActions } from './Slices/channelsSlice.js';
 import authContext, { ContextProvider } from './Components/context';
 import { SocketContext, socket } from './Components/socketContext';
 import store from './Slices/store.js';
@@ -14,6 +15,16 @@ import './App.css';
 socket.on('newMessage', (message) => {
   store.dispatch(messagesActions.setMessage(message));
 });
+socket.on('newChannel', (channel) => {
+  store.dispatch(channelsActions.addChannel(channel));
+});
+socket.on('removeChannel', (channel) => {
+  store.dispatch(channelsActions.removeChannel(channel));
+});
+socket.on('renameChannel', (channel) => {
+  store.dispatch(channelsActions.renameChannel(channel));
+});
+
 
 const UseOutlet = () => {
   const { loggedIn } = useContext(authContext);
