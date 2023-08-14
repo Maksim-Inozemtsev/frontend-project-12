@@ -6,19 +6,22 @@ import * as yup from 'yup';
 import axios from 'axios';
 import apiPath from '../../routes.js';
 import authContext from '../context';
+import { useTranslation } from 'react-i18next';
 
 const { signupPage } = apiPath;
 
-const schema = yup.object().shape({
-  username: yup.string().min(3, 'Имя должно содержать не менее 3 символов').max(20, 'Имя должно содержать не более 20 символов').required('Введите имя пользователя'),
-  password: yup.string().min(6, 'Пароль должен содержать не менее 6 символов').required('Введите пароль'),
-  confirmPassword: yup
-    .string()
-    .oneOf([yup.ref('password'), null], 'Пароли должны совпадать')
-    .required('Подтвердите пароль'),
-});
-
 const SignupForm = () => {
+  const { t } = useTranslation();
+  
+  const schema = yup.object().shape({
+    username: yup.string().min(3, t('errors.minName')).max(20, t('errors.maxName')).required(t('errors.userNameRequired')),
+    password: yup.string().min(6, t('errors.shortPassword')).required(t('errors.passwordRequired')),
+    confirmPassword: yup
+      .string()
+      .oneOf([yup.ref('password'), null], t('errors.confirmPassword'))
+      .required(t('errors.enterConfirmation')),
+  });
+  
   const [redirect, setRedirect] = useState(false);
   const [signupError, setSignupError] = useState(null);
     
@@ -43,7 +46,7 @@ const SignupForm = () => {
         setRedirect(true);
       } catch (error) {
         if (error.response.status === 409) {
-          setSignupError('Такой пользователь уже существует');
+          setSignupError(t('errors.existingUser'));
         } else {
         setSignupError(error.message);
         }
@@ -59,7 +62,7 @@ const SignupForm = () => {
     <div className="d-flex flex-column h-100 bg-light">
       <nav className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
         <div className="container">
-          <a className="navbar-brand" href="/">Hexlet Chat</a>
+          <a className="navbar-brand" href="/">{t('title')}</a>
         </div>
       </nav>
       <div className="container-fluid h-100">
@@ -70,25 +73,25 @@ const SignupForm = () => {
                 <Formik initialValues={initialValues} validationSchema={schema} onSubmit={myHandleSubmit}>
                   {({ handleSubmit, isSubmitting }) => (
                     <Form className="w-50" onSubmit={handleSubmit}>
-                      <h1 className="text-center mb-4">Регистрация</h1>
+                      <h1 className="text-center mb-4">{t('signUpTitle')}</h1>
                       <div className="form-floating mb-3">
                         <Field type="text" id="username" name="username" className="form-control" />
                         <label htmlFor="username" className="form-label">
-                          Имя пользователя
+                          {t('nameUser')}
                         </label>
                         <ErrorMessage name="username" component="div" className="text-danger" />
                       </div>
                       <div className="form-floating mb-3">
                         <Field type="password" id="password" name="password" className="form-control" />
                          <label htmlFor="password" className="form-label">
-                          Пароль
+                          {t('password')}
                         </label>
                         <ErrorMessage name="password" component="div" className="text-danger" />
                       </div>
                       <div className="form-floating mb-4">
                         <Field type="password" id="confirmPassword" name="confirmPassword" className="form-control" />
                         <label htmlFor="confirmPassword" className="form-label">
-                          Подтвердите пароль
+                          {t('confirmPassword')}
                         </label>
                           {signupError !== null && (
                             <div className="text-danger">{signupError}</div>
@@ -96,7 +99,7 @@ const SignupForm = () => {
                         <ErrorMessage name="confirmPassword" component="div" className="text-danger" />
                       </div>
                       <Button type="submit" className="btn btn-primary" disabled={isSubmitting}>
-                        Зарегистрироваться
+                        {t('signUp')}
                       </Button>
                     </Form>
                   )}

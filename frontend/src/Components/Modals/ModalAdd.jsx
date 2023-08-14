@@ -3,8 +3,10 @@ import { useSelector } from 'react-redux';
 import { Modal, Button, Form } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { SocketContext } from '../socketContext';
+import { useTranslation } from 'react-i18next';
 
 const ModalAddChannel = ({ show, onHide }) => {
+    const { t } = useTranslation();
     const socket = useContext(SocketContext);
     const [channelName, setChannelName] = useState('');
     const [error, setError] = useState('');
@@ -27,22 +29,22 @@ const ModalAddChannel = ({ show, onHide }) => {
           setError('');
           onHide();
         } else {
-          setError('Канал с таким именем уже существует');
+          setError(t('errors.uniqueChannel'));
         }
       } else {
-        setError('Необходимо ввести название канала');
+        setError(t('errors.channelNameRequired'));
       }
     };
   
     return (
       <Modal show={show} onHide={onHide}>
         <Modal.Header closeButton>
-          <Modal.Title>Добавить канал</Modal.Title>
+          <Modal.Title>{t('modal.addChannel')}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form.Control
             type="text"
-            placeholder="Название канала"
+            placeholder={t('modal.addChannelPlaceholder')}
             value={channelName}
             onChange={(e) => setChannelName(e.target.value)}
             onKeyDown={(e) => {
@@ -59,8 +61,8 @@ const ModalAddChannel = ({ show, onHide }) => {
           </Form.Control.Feedback>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={onHide}>Отменить</Button>
-          <Button variant="primary" onClick={handleAddClick}>Добавить</Button>
+          <Button variant="secondary" onClick={onHide}>{t('cancel')}</Button>
+          <Button variant="primary" onClick={handleAddClick}>{t('add')}</Button>
         </Modal.Footer>
       </Modal>
     );

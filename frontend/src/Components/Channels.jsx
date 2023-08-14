@@ -1,36 +1,36 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import cn from 'classnames';
+import { useTranslation } from 'react-i18next';
 import { actions as channelsActions } from '../Slices/channelsSlice.js';
 import ModalRemoveChannel from './Modals/ModalRemove';
 import ModalRenameChannel from './Modals/ModalRename';
 
 const Channels = () => {
+  const { t } = useTranslation();
   const { channels, currentChannelId } = useSelector((state) => state.channelsReducer);
   const dispatch = useDispatch();
 
   const [openMenuId, setOpenMenuId] = useState(null);
-  const [showDeleteModalId, setShowDeleteModalId] = useState(null);
-  const [showRenameModalId, setShowRenameModalId] = useState(null);
+  const [showDeleteModalId, setShowDeleteModalId] = useState(false);
+  const [showRenameModalId, setShowRenameModalId] = useState(false);
 
   const toggleMenu = (id) => {
     setOpenMenuId(openMenuId === id ? null : id);
   };
 
-  const handleRename = (id) => {
-    setShowRenameModalId(id);
+  const handleRename = () => {
+    setShowRenameModalId(true);
   };
 
-  const handleDelete = (id) => {
-    setShowDeleteModalId(id);
+  const handleDelete = () => {
+    setShowDeleteModalId(true);
   };
 
   const handler = (id) => {
     dispatch(channelsActions.setCurrentChannel(id));
     setOpenMenuId(null);
   }
-
-  
 
   return (
     <ul id="channels-box" className="nav flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block">
@@ -69,17 +69,16 @@ const Channels = () => {
                     data-popper-placement="bottom-end"
                     style={{position: "absolute", inset: "0px 0px auto auto", transform: "translate(0px, 40px)"}}
                   >
-                    <button data-rr-ui-dropdown-item="" className="dropdown-item" role="button" tabIndex={0} onClick={() => handleDelete(channel.id)}>Удалить</button>
-                    {showDeleteModalId && (
-                      <ModalRemoveChannel show={showDeleteModalId} channelId={channel.id} onHide={() => setShowDeleteModalId(null)} />
-                    )}
-                    <button data-rr-ui-dropdown-item="" className="dropdown-item" role="button" tabIndex={0} onClick={() => handleRename(channel.id)}>Переименовать</button>
-                    {showRenameModalId && (
-                      <ModalRenameChannel show={showRenameModalId} channelId={channel.id} onHide={() => {
-                        setShowRenameModalId(null);
-                        setOpenMenuId(null);
-                      }} />
-                    )}
+                    <button data-rr-ui-dropdown-item="" className="dropdown-item" role="button" tabIndex={0} onClick={() => handleDelete()}>{t('delete')}</button>
+                    <ModalRemoveChannel show={showDeleteModalId} channelId={channel.id} onHide={() => {
+                      setShowDeleteModalId(false);
+                      setOpenMenuId(null);
+                    }} />
+                    <button data-rr-ui-dropdown-item="" className="dropdown-item" role="button" tabIndex={0} onClick={() => handleRename()}>{t('rename')}</button>
+                    <ModalRenameChannel show={showRenameModalId} channelId={channel.id} onHide={() => {
+                      setShowRenameModalId(false);
+                      setOpenMenuId(null);
+                    }} />
                   </div>
                 )}
               </div>

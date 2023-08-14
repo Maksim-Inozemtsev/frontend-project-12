@@ -3,8 +3,10 @@ import { useSelector } from 'react-redux';
 import { Modal, Button, Form } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { SocketContext } from '../socketContext';
+import { useTranslation } from 'react-i18next';
 
 const ModalRenameChannel = ({ show, channelId, onHide }) => {
+    const { t } = useTranslation();
     const socket = useContext(SocketContext);
     const [channelName, setChannelName] = useState('');
     const [error, setError] = useState('');
@@ -13,10 +15,10 @@ const ModalRenameChannel = ({ show, channelId, onHide }) => {
     const { channels } = useSelector((state) => state.channelsReducer);
 
     useEffect(() => {
-        if (show && inputRef.current) {
-          inputRef.current.focus();
-        }
-      }, [show]);
+      if (show && inputRef.current) {
+        inputRef.current.focus();
+      }
+    }, [show]);
   
     const handleRenameClick = () => {
       if (channelName.trim() !== '') {
@@ -27,17 +29,17 @@ const ModalRenameChannel = ({ show, channelId, onHide }) => {
           setError('');
           onHide();
         } else {
-          setError('Канал с таким именем уже существует');
+          setError(t('errors.uniqueChannel'));
         }
       } else {
-        setError('Необходимо ввести название канала');
+        setError(t('errors.channelNameRequired'));
       }
     };
   
     return (
       <Modal show={show} onHide={onHide}>
         <Modal.Header closeButton>
-          <Modal.Title>Переименовать канал</Modal.Title>
+          <Modal.Title>{t('modal.renameChannel')}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form.Control
@@ -59,8 +61,8 @@ const ModalRenameChannel = ({ show, channelId, onHide }) => {
           </Form.Control.Feedback>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={onHide}>Отменить</Button>
-          <Button variant="primary" onClick={handleRenameClick}>Отправить</Button>
+          <Button variant="secondary" onClick={onHide}>{t('cancel')}</Button>
+          <Button variant="primary" onClick={handleRenameClick}>{t('rename')}</Button>
         </Modal.Footer>
       </Modal>
     );

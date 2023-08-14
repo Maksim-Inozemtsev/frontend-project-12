@@ -5,17 +5,20 @@ import * as Yup from 'yup';
 import axios from 'axios';
 import { Form, Alert } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { useTranslation } from 'react-i18next';
 import apiPath from '../../routes.js';
 import authContext from '../context';
 
 const { loginPage } = apiPath;
 
-const validationSchema = Yup.object().shape({
-  username: Yup.string().required('Username is required'),
-  password: Yup.string().min(5, 'Password must be at least 5 characters').required('Password is required'),
-});
-
 const LoginForm = () => {
+  const { t } = useTranslation();
+  
+  const validationSchema = Yup.object().shape({
+    username: Yup.string().required(t('errors.userNameRequired')),
+    password: Yup.string().required(t('errors.passwordRequired')),
+  });
+
   const [redirect, setRedirect] = useState(false);
   const [signed, setSigned] = useState(true);
   const [netWorkError, setNetWorkError] = useState(false);
@@ -46,13 +49,13 @@ const LoginForm = () => {
   }
 
   return (
-    <body className="h-100 bg-light">
+    <div className="h-100 bg-light">
       <div className="h-100">
         <div className="h-100" id="chat">
           <div className="d-flex flex-column h-100">
             <nav className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
               <div className="container">
-                <a className="navbar-brand" href="/">Hexlet Chat</a>
+                <a className="navbar-brand" href="/">{t('title')}</a>
               </div>
             </nav>
             <div className="container-fluid h-100">
@@ -63,10 +66,10 @@ const LoginForm = () => {
                       <Formik initialValues={{ username: '', password: '' }} validationSchema={validationSchema} onSubmit={myHandleSubmit}>
                         {({ handleSubmit, isSubmitting }) => (
                           <Form onSubmit={handleSubmit} className="mt-3 mt-mb-0">
-                            <h1 className="text-center mb-4">Войти</h1>
+                            <h1 className="text-center mb-4">{t('logIn')}</h1>
                             {signed === false && (
                               <Alert variant="danger">
-                                {'Пользователь не найден!'}
+                                {t('errors.userNotFound')}
                               </Alert>
                             )}
                             {netWorkError !== false && (
@@ -76,23 +79,23 @@ const LoginForm = () => {
                             )}
                             <Form.Group className="form-floating mb-3">
                               <Field className="form-control" type="text" id="username" name="username" />
-                              <Form.Label htmlFor="username">Ваш ник</Form.Label>
+                              <Form.Label htmlFor="username">{t('nickName')}</Form.Label>
                               <ErrorMessage name="username" component="div" className='text-danger'/>
                             </Form.Group>
                             <Form.Group className="form-floating mb-4">
                               <Field className="form-control" type="password" id="password" name="password" />
-                              <Form.Label htmlFor="password">Пароль</Form.Label>
+                              <Form.Label htmlFor="password">{t('password')}</Form.Label>
                               <ErrorMessage name="password" component="div" className='text-danger' />
                             </Form.Group>
                             <button className="w-100 mb-3 btn btn-outline-primary" type="submit" disabled={isSubmitting}>
-                              Войти
+                              {t('logIn')}
                             </button>
                           </Form>
                         )}
                       </Formik>
                     </div>
                     <div className="card-footer p-4">
-                      <div className="text-center"><span>Нет аккаунта?</span> <a href="/signup">Регистрация</a></div>
+                      <div className="text-center"><span>{t('noAcc')}</span> <a href="/signup">{t('signUpTitle')}</a></div>
                     </div>
                   </div>
                 </div>
@@ -102,7 +105,7 @@ const LoginForm = () => {
           <div className="Toastify"></div>
         </div>
       </div>
-    </body>
+    </div>
   );
 };
 
