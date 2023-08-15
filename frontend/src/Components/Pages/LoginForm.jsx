@@ -8,6 +8,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from 'react-i18next';
 import apiPath from '../../routes.js';
 import authContext from '../context';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
 
 const { loginPage } = apiPath;
 
@@ -22,6 +25,7 @@ const LoginForm = () => {
   const [redirect, setRedirect] = useState(false);
   const [signed, setSigned] = useState(true);
   const [netWorkError, setNetWorkError] = useState(false);
+  const notify = () => toast(netWorkError);
   const context = useContext(authContext);
   const { login } = context;
 
@@ -40,6 +44,7 @@ const LoginForm = () => {
         setSigned(false);
       } else {
         setNetWorkError(error.message);
+        notify();
       }
     }
   };
@@ -102,7 +107,7 @@ const LoginForm = () => {
               </div>
             </div>
           </div>
-          <div className="Toastify"></div>
+          <ToastContainer />
         </div>
       </div>
     </div>

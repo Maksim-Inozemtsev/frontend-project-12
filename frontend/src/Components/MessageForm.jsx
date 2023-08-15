@@ -5,6 +5,8 @@ import { Formik, Field } from 'formik';
 import authContext from './context';
 import { SocketContext } from './socketContext';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const MessageForm = () => {
   const { t } = useTranslation();
@@ -12,10 +14,16 @@ const MessageForm = () => {
   const context = useContext(authContext);
   const socket = useContext(SocketContext);
   const { currentUser } = context;
+  const notify = (e) => toast(e);
+    
   
   const myHandleSubmit = (values, action) => {
     const newMessage = { body: `${values.message}`, channelId: `${currentChannelId}`, username: `${currentUser}` }
-    socket.emit('newMessage', newMessage);
+    try {
+      socket.emit('newMessage', newMessage);
+    } catch (error) {
+      notify(error.message);
+    }
     action.resetForm();
   };
 

@@ -7,6 +7,9 @@ import axios from 'axios';
 import apiPath from '../../routes.js';
 import authContext from '../context';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
 
 const { signupPage } = apiPath;
 
@@ -24,6 +27,7 @@ const SignupForm = () => {
   
   const [redirect, setRedirect] = useState(false);
   const [signupError, setSignupError] = useState(null);
+  const notify = () => toast(signupError);
     
   const context = useContext(authContext);
   const { login } = context;
@@ -49,9 +53,9 @@ const SignupForm = () => {
           setSignupError(t('errors.existingUser'));
         } else {
         setSignupError(error.message);
+        notify();
         }
       }
-      
   };
 
   if (redirect) {
@@ -101,6 +105,7 @@ const SignupForm = () => {
                       <Button type="submit" className="btn btn-primary" disabled={isSubmitting}>
                         {t('signUp')}
                       </Button>
+                      <ToastContainer />
                     </Form>
                   )}
                 </Formik>

@@ -4,6 +4,8 @@ import { Modal, Button, Form } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { SocketContext } from '../socketContext';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const ModalAddChannel = ({ show, onHide }) => {
     const { t } = useTranslation();
@@ -11,6 +13,7 @@ const ModalAddChannel = ({ show, onHide }) => {
     const [channelName, setChannelName] = useState('');
     const [error, setError] = useState('');
     const inputRef = useRef(null);
+    const notify = (arg) => toast(arg);
 
     const { channels } = useSelector((state) => state.channelsReducer);
 
@@ -24,7 +27,12 @@ const ModalAddChannel = ({ show, onHide }) => {
       if (channelName.trim() !== '') {
         const newChannel = { name: channelName };
         if (!channels.some((el) => el.name === channelName)) {
-          socket.emit('newChannel', newChannel);
+          try {
+            socket.emit('newChannel', newChannel);
+          } catch (err) {
+            notify(err.message);
+          }
+          
           setChannelName('');
           setError('');
           onHide();
@@ -49,8 +57,9 @@ const ModalAddChannel = ({ show, onHide }) => {
             onChange={(e) => setChannelName(e.target.value)}
             onKeyDown={(e) => {
                 if (e.key === 'Enter') {
-                    e.preventDefault();
-                    handleAddClick();
+                  e.preventDefault();
+                  handleAddClick();
+                  notify(t('toastify.addChannel'));
                 }
             }}
             isInvalid={!!error}
@@ -62,7 +71,7 @@ const ModalAddChannel = ({ show, onHide }) => {
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={onHide}>{t('cancel')}</Button>
-          <Button variant="primary" onClick={handleAddClick}>{t('add')}</Button>
+          <Button variant="primary" onClick={() => { handleAddClick(); notify(t('toastify.addChannel')); }}>{t('add')}</Button>
         </Modal.Footer>
       </Modal>
     );

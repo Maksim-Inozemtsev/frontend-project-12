@@ -11,6 +11,9 @@ import ModalAddChannel from '../Modals/ModalAdd';
 import Channels from '../Channels';
 import Messages from '../Messages';
 import MessageForm from '../MessageForm';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
 
 
 const { getData } = apiPath;
@@ -20,24 +23,28 @@ const MainPage = () => {
   const context = useContext(authContext);
   const { currentToken, logout } = context;
   const dispatch = useDispatch();
+  const notify = (e) => toast(e);
   
-
   useEffect(() => {
     const fetchData = async () => {
-      const { data } = await axios.get(getData(), {
-        headers: {
-          Authorization: `Bearer ${currentToken}`,
-        },
-      });
-      const {
-        channels,
-        currentChannelId,
-        messages,
-      } = data;
+      try {
+        const { data } = await axios.get(getData(), {
+          headers: {
+            Authorization: `Bearer ${currentToken}`,
+          },
+        });
+        const {
+          channels,
+          currentChannelId,
+          messages,
+        } = data;
 
-      dispatch(channelsActions.setChannels(channels));
-      dispatch(channelsActions.setCurrentChannel(currentChannelId));
-      dispatch(messagesActions.setMessages(messages));
+        dispatch(channelsActions.setChannels(channels));
+        dispatch(channelsActions.setCurrentChannel(currentChannelId));
+        dispatch(messagesActions.setMessages(messages));
+      } catch (error) {
+        notify(error.message);
+      }
     };
 
     fetchData();
@@ -102,7 +109,8 @@ const MainPage = () => {
           </Col>
         </Row>
         </Container>
-  </Container>
+        <ToastContainer />
+    </Container>
   )
 };
 

@@ -4,6 +4,8 @@ import { Modal, Button, Form } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { SocketContext } from '../socketContext';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const ModalRenameChannel = ({ show, channelId, onHide }) => {
     const { t } = useTranslation();
@@ -11,6 +13,7 @@ const ModalRenameChannel = ({ show, channelId, onHide }) => {
     const [channelName, setChannelName] = useState('');
     const [error, setError] = useState('');
     const inputRef = useRef(null);
+    const notify = (arg) => toast(arg);
 
     const { channels } = useSelector((state) => state.channelsReducer);
 
@@ -24,7 +27,11 @@ const ModalRenameChannel = ({ show, channelId, onHide }) => {
       if (channelName.trim() !== '') {
         const data = { id: channelId, name: channelName };
         if (!channels.some((el) => el.name === channelName)) {
-          socket.emit('renameChannel', data);
+          try {
+            socket.emit('renameChannel', data);
+          } catch (err) {
+            notify(err.message);
+          }
           setChannelName('');
           setError('');
           onHide();
@@ -49,8 +56,9 @@ const ModalRenameChannel = ({ show, channelId, onHide }) => {
             onChange={(e) => setChannelName(e.target.value)}
             onKeyDown={(e) => {
                 if (e.key === 'Enter') {
-                    e.preventDefault();
-                    handleRenameClick();
+                  e.preventDefault();
+                  handleRenameClick();
+                  notify(t('toastify.renameChannel'));
                 }
             }}
             isInvalid={!!error}
@@ -62,7 +70,7 @@ const ModalRenameChannel = ({ show, channelId, onHide }) => {
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={onHide}>{t('cancel')}</Button>
-          <Button variant="primary" onClick={handleRenameClick}>{t('rename')}</Button>
+          <Button variant="primary" onClick={() => { handleRenameClick(); notify(t('toastify.renameChannel')); }}>{t('rename')}</Button>
         </Modal.Footer>
       </Modal>
     );

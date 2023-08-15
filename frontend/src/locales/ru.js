@@ -31,6 +31,11 @@ export default {
         confirm: 'Уверены?',
         renameChannel: 'Переименовать канал',
       },
+      toastify: {
+        addChannel: 'Канал создан',
+        deleteChannel: 'Канал удалён',
+        renameChannel: 'Канал переименован',
+      },
       errors: {
         userNotFound: 'Пользователь не найден',
         shortName: 'Слишком короткий логин',
