@@ -1,6 +1,6 @@
 import { Formik, Field, ErrorMessage } from 'formik';
 import { Navigate } from 'react-router-dom';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import * as Yup from 'yup';
 import axios from 'axios';
 import { Form, Alert } from 'react-bootstrap';
@@ -29,6 +29,12 @@ const LoginForm = () => {
   const context = useContext(authContext);
   const { login } = context;
 
+  useEffect(() => {
+    if (netWorkError !== false) {
+      notify();
+    }
+  }, [netWorkError]);
+  
   const myHandleSubmit = async (values) => {
     try {
       const response = await axios.post(loginPage(), {
@@ -40,11 +46,10 @@ const LoginForm = () => {
       login(token, username);
       setRedirect(true);
     } catch (error) {
-      if (error.response.status === 401) {
+      if (error.response?.status === 401) {
         setSigned(false);
       } else {
         setNetWorkError(error.message);
-        notify();
       }
     }
   };

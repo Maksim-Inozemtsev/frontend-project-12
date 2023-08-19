@@ -16,11 +16,16 @@ const MessageForm = () => {
   const { currentUser } = context;
   const notify = (e) => toast(e);
     
+  const addMessage =  (message) => new Promise((resolve, reject) => {
+    socket.timeout(1000).emit('newMessage', message, (error, response) => (
+      response?.status === 'ok' ? resolve(response?.data) : reject(error)
+    ));
+  });
   
-  const myHandleSubmit = (values, action) => {
+  const myHandleSubmit = async (values, action) => {
     const newMessage = { body: `${values.message}`, channelId: `${currentChannelId}`, username: `${currentUser}` }
     try {
-      socket.emit('newMessage', newMessage);
+      await addMessage(newMessage);
     } catch (error) {
       notify(error.message);
     }

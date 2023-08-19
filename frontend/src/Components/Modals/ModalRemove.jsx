@@ -11,9 +11,16 @@ const ModalRemoveChannel = ({ show, channelId, onHide }) => {
   const socket = useContext(SocketContext);
   const notify = (arg) => toast(arg);
   
-  const handleRemove = (id) => {
+  const removeChannel = () => new Promise((resolve, reject) => {
+    socket.timeout(1000).emit('removeChannel', { id: channelId }, (error, response) => (
+      response?.status === 'ok' ? resolve(response?.data) : reject(error)
+    ));
+  });
+  
+  const handleRemove = async () => {
     try {
-      socket.emit('removeChannel', { id });
+      await removeChannel();
+      notify(t('toastify.deleteChannel'))
     } catch (err) {
       notify(err.message);
     }
@@ -29,7 +36,7 @@ const ModalRemoveChannel = ({ show, channelId, onHide }) => {
         <p className="lead">{t('modal.confirm')}</p>
         <div className="d-flex justify-content-end">
           <Button variant="secondary" className="me-2 btn btn-secondary" onClick={onHide}>{t('cancel')}</Button>
-          <Button variant="primary" className="btn btn-danger" onClick={() => { handleRemove(channelId); notify(t('toastify.deleteChannel')); }}>{t('delete')}</Button>
+          <Button variant="primary" className="btn btn-danger" onClick={() => handleRemove(channelId)}>{t('delete')}</Button>
         </div>
       </Modal.Body>
     </Modal>

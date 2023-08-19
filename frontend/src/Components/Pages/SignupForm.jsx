@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
@@ -38,6 +38,12 @@ const SignupForm = () => {
     confirmPassword: '',
   };
 
+  useEffect(() => {
+    if (signupError !== null) {
+      notify();
+    }
+  }, [signupError]);
+
   const myHandleSubmit = async (values) => {
     try {
         const response = await axios.post(signupPage(), {
@@ -49,7 +55,7 @@ const SignupForm = () => {
         login(token, username);
         setRedirect(true);
       } catch (error) {
-        if (error.response.status === 409) {
+        if (error.response?.status === 409) {
           setSignupError(t('errors.existingUser'));
         } else {
         setSignupError(error.message);

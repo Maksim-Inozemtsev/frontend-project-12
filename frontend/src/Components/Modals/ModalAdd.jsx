@@ -22,27 +22,34 @@ const ModalAddChannel = ({ show, onHide }) => {
         inputRef.current.focus();
       }
     }, [show]);
-  
-    const handleAddClick = () => {
-      if (channelName.trim() !== '') {
-        const newChannel = { name: channelName };
-        if (!channels.some((el) => el.name === channelName)) {
-          try {
-            socket.emit('newChannel', newChannel);
-          } catch (err) {
-            notify(err.message);
-          }
-          
-          setChannelName('');
-          setError('');
-          onHide();
-        } else {
-          setError(t('errors.uniqueChannel'));
+
+    const addChannel =  (channel) => new Promise((resolve, reject) => {
+      socket.timeout(1000).emit('newChannel', channel, (error, response) => (
+        response?.status === 'ok' ? resolve(response?.data) : reject(error)
+      ));
+    });
+
+    const handleAddClick = async () => {
+    if (channelName.trim() !== '') {
+      const newChannel = { name: channelName };
+      if (!channels.some((el) => el.name === channelName)) {
+        try {
+          await addChannel(newChannel);
+          notify(t('toastify.addChannel'));
+        } catch (err) {
+          notify(err.message);
         }
+
+        setChannelName('');
+        setError('');
+        onHide();
       } else {
-        setError(t('errors.channelNameRequired'));
+        setError(t('errors.uniqueChannel'));
       }
-    };
+    } else {
+      setError(t('errors.channelNameRequired'));
+    }
+  };
   
     return (
       <Modal show={show} onHide={onHide}>
@@ -59,7 +66,6 @@ const ModalAddChannel = ({ show, onHide }) => {
                 if (e.key === 'Enter') {
                   e.preventDefault();
                   handleAddClick();
-                  notify(t('toastify.addChannel'));
                 }
             }}
             isInvalid={!!error}
@@ -71,10 +77,11 @@ const ModalAddChannel = ({ show, onHide }) => {
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={onHide}>{t('cancel')}</Button>
-          <Button variant="primary" onClick={() => { handleAddClick(); notify(t('toastify.addChannel')); }}>{t('add')}</Button>
+          <Button variant="primary" onClick={() => handleAddClick()}>{t('add')}</Button>
         </Modal.Footer>
       </Modal>
     );
   };
   
   export default ModalAddChannel;
+ 

@@ -23,12 +23,19 @@ const ModalRenameChannel = ({ show, channelId, onHide }) => {
       }
     }, [show]);
   
-    const handleRenameClick = () => {
+    const renameChannel =  (renameData) => new Promise((resolve, reject) => {
+      socket.timeout(1000).emit('renameChannel', renameData, (error, response) => (
+        response?.status === 'ok' ? resolve(response?.data) : reject(error)
+      ));
+    });
+    
+    const handleRenameClick = async () => {
       if (channelName.trim() !== '') {
         const data = { id: channelId, name: channelName };
         if (!channels.some((el) => el.name === channelName)) {
           try {
-            socket.emit('renameChannel', data);
+            await renameChannel(data);
+            notify(t('toastify.renameChannel'))
           } catch (err) {
             notify(err.message);
           }
@@ -58,7 +65,6 @@ const ModalRenameChannel = ({ show, channelId, onHide }) => {
                 if (e.key === 'Enter') {
                   e.preventDefault();
                   handleRenameClick();
-                  notify(t('toastify.renameChannel'));
                 }
             }}
             isInvalid={!!error}
@@ -70,7 +76,7 @@ const ModalRenameChannel = ({ show, channelId, onHide }) => {
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={onHide}>{t('cancel')}</Button>
-          <Button variant="primary" onClick={() => { handleRenameClick(); notify(t('toastify.renameChannel')); }}>{t('rename')}</Button>
+          <Button variant="primary" onClick={() => handleRenameClick()}>{t('rename')}</Button>
         </Modal.Footer>
       </Modal>
     );
