@@ -6,6 +6,7 @@ import { SocketContext } from '../socketContext';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import filter from 'leo-profanity';
 
 const ModalRenameChannel = ({ show, channelId, onHide }) => {
     const { t } = useTranslation();
@@ -14,6 +15,7 @@ const ModalRenameChannel = ({ show, channelId, onHide }) => {
     const [error, setError] = useState('');
     const inputRef = useRef(null);
     const notify = (arg) => toast(arg);
+    filter.loadDictionary('ru');
 
     const { channels } = useSelector((state) => state.channelsReducer);
 
@@ -31,7 +33,7 @@ const ModalRenameChannel = ({ show, channelId, onHide }) => {
     
     const handleRenameClick = async () => {
       if (channelName.trim() !== '') {
-        const data = { id: channelId, name: channelName };
+        const data = { id: channelId, name: filter.clean(channelName) };
         if (!channels.some((el) => el.name === channelName)) {
           try {
             await renameChannel(data);

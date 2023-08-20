@@ -7,6 +7,7 @@ import { SocketContext } from './socketContext';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import filter from 'leo-profanity';
 
 const MessageForm = () => {
   const { t } = useTranslation();
@@ -15,6 +16,7 @@ const MessageForm = () => {
   const socket = useContext(SocketContext);
   const { currentUser } = context;
   const notify = (e) => toast(e);
+  filter.loadDictionary('ru');
     
   const addMessage =  (message) => new Promise((resolve, reject) => {
     socket.timeout(1000).emit('newMessage', message, (error, response) => (
@@ -23,7 +25,8 @@ const MessageForm = () => {
   });
   
   const myHandleSubmit = async (values, action) => {
-    const newMessage = { body: `${values.message}`, channelId: `${currentChannelId}`, username: `${currentUser}` }
+    const filteredMessage = filter.clean(values.message);
+    const newMessage = { body: filteredMessage, channelId: `${currentChannelId}`, username: `${currentUser}` }
     try {
       await addMessage(newMessage);
     } catch (error) {
