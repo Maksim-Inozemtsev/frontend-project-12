@@ -17,7 +17,7 @@ const SignupForm = () => {
   const { t } = useTranslation();
   
   const schema = yup.object().shape({
-    username: yup.string().min(3, t('errors.minName')).max(20, t('errors.maxName')).required(t('errors.userNameRequired')),
+    username: yup.string().min(3, t('errors.minMaxName')).max(20, t('errors.minMaxName')).required(t('errors.userNameRequired')),
     password: yup.string().min(6, t('errors.shortPassword')).required(t('errors.passwordRequired')),
     confirmPassword: yup
       .string()
