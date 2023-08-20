@@ -37,9 +37,9 @@ export default {
         renameChannel: 'Канал переименован',
       },
       errors: {
-        userNotFound: 'Пользователь не найден',
+        userNotFound: 'Неверные имя пользователя или пароль',
         shortName: 'Слишком короткий логин',
-        shortPassword: 'Пароль должен содержать не менее 6 символов',
+        shortPassword: 'Не менее 6 символов',
         userNameRequired: 'Введите имя пользователя',
         passwordRequired: 'Введите пароль',
         minMaxName: 'От 3 до 20 символов',
