@@ -12,6 +12,7 @@ import { actions as channelsActions } from './Slices/channelsSlice.js';
 import authContext, { ContextProvider } from './Components/context';
 import { SocketContext, socket } from './Components/socketContext';
 import store from './Slices/store.js';
+import { Provider as RollbarProvider, ErrorBoundary } from '@rollbar/react';
 import './App.css';
 
 socket.on('newMessage', (message) => {
@@ -33,26 +34,35 @@ const UseOutlet = () => {
   return loggedIn ? <Outlet /> : <Navigate to="/login" />;
 }
 
+const rollbarConfig = {
+  accessToken: 'd6ec948d5561494f9834dca0c71be392',
+  environment: 'production',
+};
+
 function App() {
   return (
-    <BrowserRouter>
-      <Provider store={store}>
-        <I18nextProvider i18n={i18next}>
-          <SocketContext.Provider value={socket}>
-            <ContextProvider>
-              <Routes>
-                <Route path="/" element={<UseOutlet />}>
-                  <Route path="" element={<MainPage />} />
-                </Route>
-                <Route path="/login" element={<LoginForm />} />
-                <Route path="/signup" element={<SignupForm />} />
-                <Route path="*" element={<NotFoundPage />} />
-              </Routes>
-            </ContextProvider>
-          </SocketContext.Provider>
-        </I18nextProvider>
-      </Provider>
-    </BrowserRouter> 
+    <RollbarProvider config={rollbarConfig}>
+      <ErrorBoundary>
+        <BrowserRouter>
+          <Provider store={store}>
+            <I18nextProvider i18n={i18next}>
+              <SocketContext.Provider value={socket}>
+                <ContextProvider>
+                  <Routes>
+                    <Route path="/" element={<UseOutlet />}>
+                      <Route path="" element={<MainPage />} />
+                    </Route>
+                    <Route path="/login" element={<LoginForm />} />
+                    <Route path="/signup" element={<SignupForm />} />
+                    <Route path="*" element={<NotFoundPage />} />
+                  </Routes>
+                </ContextProvider>
+              </SocketContext.Provider>
+            </I18nextProvider>
+          </Provider>
+        </BrowserRouter> 
+      </ErrorBoundary>
+    </RollbarProvider> 
   );
 }
 
