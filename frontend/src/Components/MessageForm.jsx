@@ -16,7 +16,8 @@ const MessageForm = () => {
   const socket = useContext(SocketContext);
   const { currentUser } = context;
   const notify = (e) => toast(e);
-  filter.loadDictionary('ru');
+  filter.add(filter.getDictionary('en'));
+  filter.add(filter.getDictionary('ru'));
     
   const addMessage =  (message) => new Promise((resolve, reject) => {
     socket.timeout(1000).emit('newMessage', message, (error, response) => (

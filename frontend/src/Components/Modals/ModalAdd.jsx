@@ -15,7 +15,8 @@ const ModalAddChannel = ({ show, onHide }) => {
     const [error, setError] = useState('');
     const inputRef = useRef(null);
     const notify = (arg) => toast(arg);
-    filter.loadDictionary('ru');
+    filter.add(filter.getDictionary('en'));
+    filter.add(filter.getDictionary('ru'));
 
     const { channels } = useSelector((state) => state.channelsReducer);
 
