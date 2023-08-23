@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect, useRef } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Modal, Button, Form } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { SocketContext } from '../socketContext';
@@ -7,10 +7,12 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import filter from 'leo-profanity';
+import { actions as channelsActions } from '../../Slices/channelsSlice.js';
 
 const ModalAddChannel = ({ show, onHide }) => {
     const { t } = useTranslation();
     const socket = useContext(SocketContext);
+    const dispatch = useDispatch();
     const [channelName, setChannelName] = useState('');
     const [error, setError] = useState('');
     const inputRef = useRef(null);
@@ -27,9 +29,10 @@ const ModalAddChannel = ({ show, onHide }) => {
     }, [show]);
 
     const addChannel =  (channel) => new Promise((resolve, reject) => {
-      socket.timeout(1000).emit('newChannel', channel, (error, response) => (
-        response?.status === 'ok' ? resolve(response?.data) : reject(error)
-      ));
+      socket.timeout(1000).emit('newChannel', channel, (error, response) => {
+        response?.status === 'ok' ? resolve(response?.data) : reject(error);
+        dispatch(channelsActions.setCurrentChannel(response.data.id));
+      });
     });
 
     const handleAddClick = async () => {

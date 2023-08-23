@@ -1,5 +1,5 @@
-import { useEffect, useContext, useState, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useEffect, useContext, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Button, Navbar, Container, Row, Col } from 'react-bootstrap';
 import authContext from '../context';
 import axios from 'axios';
@@ -49,16 +49,6 @@ const MainPage = () => {
 
     fetchData();
   }, []);
-
-  const { channels } = useSelector((state) => state.channelsReducer);
-  const prevChannelsLength = useRef(channels.length);
-
-  useEffect(() => {
-    if (channels.length > prevChannelsLength.current) {
-      dispatch(channelsActions.setCurrentChannel(channels[channels.length - 1].id));
-    }
-    prevChannelsLength.current = channels.length;
-  }, [channels]);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
