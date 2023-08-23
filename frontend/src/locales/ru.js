@@ -26,10 +26,10 @@ export default {
       messagePlaceholder: 'Введите сообщение...',
       modal: {
         addChannel: 'Добавить канал',
-        addChannelPlaceholder: 'Название канала',
+        addChannelPlaceholder: 'Имя канала',
         deleteChannel: 'Удалить канал',
         confirm: 'Уверены?',
-        renameChannel: 'Переименовать канал',
+        renameChannel: 'Переименовать',
       },
       toastify: {
         addChannel: 'Канал создан',
