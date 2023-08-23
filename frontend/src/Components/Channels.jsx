@@ -58,6 +58,7 @@ const Channels = () => {
                   aria-expanded="false"
                   onClick={() => toggleMenu(channel.id)}
                 >
+                  <span className="visually-hidden">{t('modal.manageChannel')}</span>
                 </button>
                 {openMenuId === channel.id && (
                   <div

@@ -30,6 +30,7 @@ export default {
         deleteChannel: 'Удалить канал',
         confirm: 'Уверены?',
         renameChannel: 'Переименовать',
+        manageChannel: 'Управление каналом',
       },
       toastify: {
         addChannel: 'Канал создан',
