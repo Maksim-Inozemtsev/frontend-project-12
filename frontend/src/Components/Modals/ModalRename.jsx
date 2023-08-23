@@ -59,6 +59,9 @@ const ModalRenameChannel = ({ show, channelId, onHide }) => {
           <Modal.Title>{t('modal.renameChannel')}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
+          <label className="visually-hidden" htmlFor="name">
+            {t('modal.addChannelName')}
+          </label>
           <Form.Control
             type="text"
             placeholder=""
@@ -72,6 +75,7 @@ const ModalRenameChannel = ({ show, channelId, onHide }) => {
             }}
             isInvalid={!!error}
             ref={inputRef}
+            id="name"
           />
           <Form.Control.Feedback type="invalid">
             {error}
