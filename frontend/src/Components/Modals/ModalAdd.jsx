@@ -63,9 +63,12 @@ const ModalAddChannel = ({ show, onHide }) => {
           <Modal.Title>{t('modal.addChannel')}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
+          <label className="visually-hidden" htmlFor="channelName">
+            {t('modal.addChannelName')}
+          </label>
           <Form.Control
             type="text"
-            placeholder={t('modal.addChannelPlaceholder')}
+            placeholder=""
             value={channelName}
             onChange={(e) => setChannelName(e.target.value)}
             onKeyDown={(e) => {
@@ -76,6 +79,7 @@ const ModalAddChannel = ({ show, onHide }) => {
             }}
             isInvalid={!!error}
             ref={inputRef}
+            id="channelName"
           />
           <Form.Control.Feedback type="invalid">
             {error}

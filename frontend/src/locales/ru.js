@@ -26,7 +26,7 @@ export default {
       messagePlaceholder: 'Введите сообщение...',
       modal: {
         addChannel: 'Добавить канал',
-        addChannelPlaceholder: 'Имя канала',
+        addChannelName: 'Имя канала',
         deleteChannel: 'Удалить канал',
         confirm: 'Уверены?',
         renameChannel: 'Переименовать',
