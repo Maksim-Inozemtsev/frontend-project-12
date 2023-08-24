@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { actions as channelsActions } from '../Slices/channelsSlice.js';
+import { actions as channelsActions } from './channelsSlice.js';
 
 const initialState = {
   messages: [],
