@@ -6,17 +6,16 @@ import axios from 'axios';
 import { Form, Alert } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from 'react-i18next';
+import { toast, ToastContainer } from 'react-toastify';
 import apiPath from '../../routes.js';
 import authContext from '../context';
-import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { ToastContainer } from 'react-toastify';
 
 const { loginPage } = apiPath;
 
 const LoginForm = () => {
   const { t } = useTranslation();
-  
+
   const validationSchema = Yup.object().shape({
     username: Yup.string().required(t('errors.userNameRequired')),
     password: Yup.string().required(t('errors.passwordRequired')),
@@ -34,7 +33,7 @@ const LoginForm = () => {
       notify();
     }
   }, [netWorkError]);
-  
+
   const myHandleSubmit = async (values) => {
     try {
       const response = await axios.post(loginPage(), {
@@ -90,12 +89,12 @@ const LoginForm = () => {
                             <Form.Group className="form-floating mb-3">
                               <Field className="form-control" type="text" id="username" name="username" />
                               <Form.Label htmlFor="username">{t('nickName')}</Form.Label>
-                              <ErrorMessage name="username" component="div" className='text-danger'/>
+                              <ErrorMessage name="username" component="div" className="text-danger" />
                             </Form.Group>
                             <Form.Group className="form-floating mb-4">
                               <Field className="form-control" type="password" id="password" name="password" />
                               <Form.Label htmlFor="password">{t('password')}</Form.Label>
-                              <ErrorMessage name="password" component="div" className='text-danger' />
+                              <ErrorMessage name="password" component="div" className="text-danger" />
                             </Form.Group>
                             <button className="w-100 mb-3 btn btn-outline-primary" type="submit" disabled={isSubmitting}>
                               {t('logIn')}
@@ -105,7 +104,11 @@ const LoginForm = () => {
                       </Formik>
                     </div>
                     <div className="card-footer p-4">
-                      <div className="text-center"><span>{t('noAcc')}</span> <a href="/signup">{t('signUpTitle')}</a></div>
+                      <div className="text-center">
+                        <span>{t('noAcc')}</span>
+                        {' '}
+                        <a href="/signup">{t('signUpTitle')}</a>
+                      </div>
                     </div>
                   </div>
                 </div>

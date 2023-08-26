@@ -1,9 +1,12 @@
 import { useEffect, useContext, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Button, Navbar, Container, Row, Col } from 'react-bootstrap';
-import authContext from '../context';
+import {
+  Button, Navbar, Container, Row, Col,
+} from 'react-bootstrap';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
+import { toast, ToastContainer } from 'react-toastify';
+import authContext from '../context';
 import apiPath from '../../routes.js';
 import { actions as channelsActions } from '../../Slices/channelsSlice.js';
 import { actions as messagesActions } from '../../Slices/messagesSlice.js';
@@ -11,10 +14,7 @@ import ModalAddChannel from '../Modals/ModalAdd';
 import Channels from '../Channels';
 import Messages from '../Messages';
 import MessageForm from '../MessageForm';
-import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { ToastContainer } from 'react-toastify';
-
 
 const { getData } = apiPath;
 
@@ -24,7 +24,7 @@ const MainPage = () => {
   const { currentToken, logout } = context;
   const dispatch = useDispatch();
   const notify = (e) => toast(e);
-  
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -61,7 +61,7 @@ const MainPage = () => {
         </Container>
       </Navbar>
       <Container className="h-100 my-4 overflow-hidden rounded shadow">
-      <Row className="h-100 bg-white flex-md-row">
+        <Row className="h-100 bg-white flex-md-row">
           <Col className="border-end px-0 bg-light flex-column d-flex" xs={4} md={2}>
             <div className="d-flex mt-1 justify-content-between mb-2 ps-4 pe-2 p-4">
               <b>{t('channels')}</b>
@@ -82,26 +82,26 @@ const MainPage = () => {
           <Col xs={12} md={8}>
             <div
               style={{
-              height: '60vh',
-              overflowY: 'auto',
+                height: '60vh',
+                overflowY: 'auto',
               }}
             >
               <Messages />
-            </div>  
-              <div
-                style={{
+            </div>
+            <div
+              style={{
                 marginTop: 'auto',
                 padding: '0 20px 20px',
-                }}
-              >
-                <MessageForm />
-              </div>
+              }}
+            >
+              <MessageForm />
+            </div>
           </Col>
         </Row>
-        </Container>
-        <ToastContainer />
+      </Container>
+      <ToastContainer />
     </Container>
-  )
+  );
 };
 
 export default MainPage;

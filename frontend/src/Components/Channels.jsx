@@ -30,7 +30,7 @@ const Channels = () => {
   const handler = (id) => {
     dispatch(channelsActions.setCurrentChannel(id));
     setOpenMenuId(null);
-  }
+  };
 
   return (
     <ul id="channels-box" className="nav flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block">
@@ -41,14 +41,15 @@ const Channels = () => {
         const dropdownButtonClass = cn('flex-grow-0', 'dropdown-toggle', 'dropdown-toggle-split', 'btn', {
           'btn-secondary': channel.id === currentChannelId,
         });
-        
-        return (<li key={channel.id} className="nav-item w-100">
-          <div role="group" className="d-flex dropdown btn-group">
-          <button type="button" className={buttonClass} onClick={() => handler(channel.id)}>
-            <span className="me-1">#</span>
-            {channel.name}
-          </button>
-          {channel.removable && (
+
+        return (
+          <li key={channel.id} className="nav-item w-100">
+            <div role="group" className="d-flex dropdown btn-group">
+              <button type="button" className={buttonClass} onClick={() => handler(channel.id)}>
+                <span className="me-1">#</span>
+                {channel.name}
+              </button>
+              {channel.removable && (
               <div className="dropdown">
                 <button
                   className={dropdownButtonClass}
@@ -61,32 +62,41 @@ const Channels = () => {
                   <span className="visually-hidden">{t('modal.manageChannel')}</span>
                 </button>
                 {openMenuId === channel.id && (
-                  <div
-                    x-placement="bottom-end"
-                    aria-labelledby="react-aria3209376880-1"
-                    className="dropdown-menu show"
-                    data-popper-reference-hidden="false"
-                    data-popper-escaped="false"
-                    data-popper-placement="bottom-end"
-                    style={{position: "absolute", inset: "0px 0px auto auto", transform: "translate(0px, 40px)"}}
-                  >
-                    <button data-rr-ui-dropdown-item="" className="dropdown-item" role="button" tabIndex={0} onClick={() => handleDelete()}>{t('delete')}</button>
-                    <ModalRemoveChannel show={showDeleteModalId} channelId={channel.id} onHide={() => {
+                <div
+                  x-placement="bottom-end"
+                  aria-labelledby="react-aria3209376880-1"
+                  className="dropdown-menu show"
+                  data-popper-reference-hidden="false"
+                  data-popper-escaped="false"
+                  data-popper-placement="bottom-end"
+                  style={{ position: 'absolute', inset: '0px 0px auto auto', transform: 'translate(0px, 40px)' }}
+                >
+                  <button data-rr-ui-dropdown-item="" className="dropdown-item" role="button" tabIndex={0} onClick={() => handleDelete()}>{t('delete')}</button>
+                  <ModalRemoveChannel
+                    show={showDeleteModalId}
+                    channelId={channel.id}
+                    onHide={() => {
                       setShowDeleteModalId(false);
                       setOpenMenuId(null);
-                    }} />
-                    <button data-rr-ui-dropdown-item="" className="dropdown-item" role="button" tabIndex={0} onClick={() => handleRename()}>{t('rename')}</button>
-                    <ModalRenameChannel show={showRenameModalId} channelId={channel.id} onHide={() => {
+                    }}
+                  />
+                  <button data-rr-ui-dropdown-item="" className="dropdown-item" role="button" tabIndex={0} onClick={() => handleRename()}>{t('rename')}</button>
+                  <ModalRenameChannel
+                    show={showRenameModalId}
+                    channelId={channel.id}
+                    onHide={() => {
                       setShowRenameModalId(false);
                       setOpenMenuId(null);
-                    }} />
-                  </div>
+                    }}
+                  />
+                </div>
                 )}
               </div>
-            )}
-          </div>
-        </li>
-        )})}
+              )}
+            </div>
+          </li>
+        );
+      })}
     </ul>
   );
 };

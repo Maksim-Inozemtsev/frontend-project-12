@@ -1,21 +1,22 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import {
+  Formik, Form, Field, ErrorMessage,
+} from 'formik';
 import * as yup from 'yup';
 import axios from 'axios';
-import apiPath from '../../routes.js';
-import authContext from '../context';
 import { useTranslation } from 'react-i18next';
-import { toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { ToastContainer } from 'react-toastify';
+import authContext from '../context';
+import apiPath from '../../routes.js';
 
 const { signupPage } = apiPath;
 
 const SignupForm = () => {
   const { t } = useTranslation();
-  
+
   const schema = yup.object().shape({
     username: yup.string().min(3, t('errors.minMaxName')).max(20, t('errors.minMaxName')).required(t('errors.userNameRequired')),
     password: yup.string().min(6, t('errors.shortPassword')).required(t('errors.passwordRequired')),
@@ -24,14 +25,14 @@ const SignupForm = () => {
       .oneOf([yup.ref('password'), null], t('errors.confirmPassword'))
       .required(t('errors.enterConfirmation')),
   });
-  
+
   const [redirect, setRedirect] = useState(false);
   const [signupError, setSignupError] = useState(null);
   const notify = () => toast(signupError);
-    
+
   const context = useContext(authContext);
   const { login } = context;
-  
+
   const initialValues = {
     username: '',
     password: '',
@@ -46,22 +47,22 @@ const SignupForm = () => {
 
   const myHandleSubmit = async (values) => {
     try {
-        const response = await axios.post(signupPage(), {
-          username: values.username,
-          password: values.password,
-        });
-  
-        const { token, username } = response.data;
-        login(token, username);
-        setRedirect(true);
-      } catch (error) {
-        if (error.response?.status === 409) {
-          setSignupError(t('errors.existingUser'));
-        } else {
+      const response = await axios.post(signupPage(), {
+        username: values.username,
+        password: values.password,
+      });
+
+      const { token, username } = response.data;
+      login(token, username);
+      setRedirect(true);
+    } catch (error) {
+      if (error.response?.status === 409) {
+        setSignupError(t('errors.existingUser'));
+      } else {
         setSignupError(error.message);
         notify();
-        }
       }
+    }
   };
 
   if (redirect) {
@@ -93,7 +94,7 @@ const SignupForm = () => {
                       </div>
                       <div className="form-floating mb-3">
                         <Field type="password" id="password" name="password" className="form-control" />
-                         <label htmlFor="password" className="form-label">
+                        <label htmlFor="password" className="form-label">
                           {t('password')}
                         </label>
                         <ErrorMessage name="password" component="div" className="text-danger" />
@@ -103,9 +104,9 @@ const SignupForm = () => {
                         <label htmlFor="confirmPassword" className="form-label">
                           {t('confirmPassword')}
                         </label>
-                          {signupError !== null && (
-                            <div className="text-danger">{signupError}</div>
-                          )}
+                        {signupError !== null && (
+                        <div className="text-danger">{signupError}</div>
+                        )}
                         <ErrorMessage name="confirmPassword" component="div" className="text-danger" />
                       </div>
                       <Button type="submit" className="btn btn-primary" disabled={isSubmitting}>
