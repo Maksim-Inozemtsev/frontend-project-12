@@ -81,7 +81,11 @@ const SignupForm = () => {
           <div className="col-12 col-md-8 col-xxl-6">
             <div className="card shadow-sm">
               <div className="card-body d-flex flex-column flex-md-row justify-content-around align-items-center p-5">
-                <Formik initialValues={initialValues} validationSchema={schema} onSubmit={myHandleSubmit}>
+                <Formik
+                  initialValues={initialValues}
+                  validationSchema={schema}
+                  onSubmit={myHandleSubmit}
+                >
                   {({ handleSubmit, isSubmitting }) => (
                     <Form className="w-50" onSubmit={handleSubmit}>
                       <h1 className="text-center mb-4">{t('signUpTitle')}</h1>

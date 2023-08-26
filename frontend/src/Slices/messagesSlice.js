@@ -14,7 +14,7 @@ const messagesSlice = createSlice({
     },
 
     setMessage(state, { payload }) {
-      state.messages = [...state.messages, payload];
+      state.messages.push(payload);
     },
   },
 
@@ -22,7 +22,7 @@ const messagesSlice = createSlice({
     builder.addCase(channelsActions.removeChannel, (state, action) => {
       const channelId = action.payload.id;
       const restMessages = state.messages.filter((e) => e.channelId !== channelId.toString());
-      state.messages = [...restMessages];
+      state.messages = restMessages;
     });
   },
 });

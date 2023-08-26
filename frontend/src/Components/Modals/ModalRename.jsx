@@ -4,11 +4,11 @@ import React, {
 import { useSelector } from 'react-redux';
 import { Modal, Button, Form } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { SocketContext } from '../socketContext';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import filter from 'leo-profanity';
+import { SocketContext } from '../socketContext';
 
 const ModalRenameChannel = ({ show, channelId, onHide }) => {
   const { t } = useTranslation();
@@ -29,8 +29,8 @@ const ModalRenameChannel = ({ show, channelId, onHide }) => {
   }, [show]);
 
   const renameChannel = (renameData) => new Promise((resolve, reject) => {
-    socket.timeout(1000).emit('renameChannel', renameData, (error, response) => (
-      response?.status === 'ok' ? resolve(response?.data) : reject(error)
+    socket.timeout(1000).emit('renameChannel', renameData, (err, response) => (
+      response?.status === 'ok' ? resolve(response?.data) : reject(err)
     ));
   });
 

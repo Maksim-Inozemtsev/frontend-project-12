@@ -63,7 +63,6 @@ const Channels = () => {
                 </button>
                 {openMenuId === channel.id && (
                 <div
-                  x-placement="bottom-end"
                   aria-labelledby="react-aria3209376880-1"
                   className="dropdown-menu show"
                   data-popper-reference-hidden="false"
@@ -71,7 +70,7 @@ const Channels = () => {
                   data-popper-placement="bottom-end"
                   style={{ position: 'absolute', inset: '0px 0px auto auto', transform: 'translate(0px, 40px)' }}
                 >
-                  <button data-rr-ui-dropdown-item="" className="dropdown-item" role="button" tabIndex={0} onClick={() => handleDelete()}>{t('delete')}</button>
+                  <button data-rr-ui-dropdown-item="" className="dropdown-item" type="button" tabIndex={0} onClick={() => handleDelete()}>{t('delete')}</button>
                   <ModalRemoveChannel
                     show={showDeleteModalId}
                     channelId={channel.id}
@@ -80,7 +79,7 @@ const Channels = () => {
                       setOpenMenuId(null);
                     }}
                   />
-                  <button data-rr-ui-dropdown-item="" className="dropdown-item" role="button" tabIndex={0} onClick={() => handleRename()}>{t('rename')}</button>
+                  <button data-rr-ui-dropdown-item="" className="dropdown-item" type="button" tabIndex={0} onClick={() => handleRename()}>{t('rename')}</button>
                   <ModalRenameChannel
                     show={showRenameModalId}
                     channelId={channel.id}

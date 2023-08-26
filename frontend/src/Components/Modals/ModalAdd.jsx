@@ -4,12 +4,12 @@ import React, {
 import { useSelector, useDispatch } from 'react-redux';
 import { Modal, Button, Form } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { SocketContext } from '../socketContext';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import filter from 'leo-profanity';
 import { actions as channelsActions } from '../../Slices/channelsSlice.js';
+import { SocketContext } from '../socketContext';
 
 const ModalAddChannel = ({ show, onHide }) => {
   const { t } = useTranslation();
@@ -31,9 +31,13 @@ const ModalAddChannel = ({ show, onHide }) => {
   }, [show]);
 
   const addChannel = (channel) => new Promise((resolve, reject) => {
-    socket.timeout(1000).emit('newChannel', channel, (error, response) => {
-      response?.status === 'ok' ? resolve(response?.data) : reject(error);
-      dispatch(channelsActions.setCurrentChannel(response.data.id));
+    socket.timeout(1000).emit('newChannel', channel, (err, response) => {
+      if (response?.status === 'ok') {
+        resolve(response?.data);
+        dispatch(channelsActions.setCurrentChannel(response.data.id));
+      } else {
+        reject(err);
+      }
     });
   });
 

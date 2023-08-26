@@ -6,8 +6,9 @@ const Messages = () => {
   const { t } = useTranslation();
   const { channels, currentChannelId } = useSelector((state) => state.channelsReducer);
   const { messages } = useSelector((state) => state.messagesReducer);
-  const currentChannelMessages = messages.filter((el) => el.channelId === currentChannelId?.toString());
-  const currentChannel = channels.find((item) => item.id == currentChannelId);
+  const currentChannelMessages = messages
+    .filter((el) => el.channelId === currentChannelId?.toString());
+  const currentChannel = channels.find((item) => item.id === currentChannelId);
 
   return (
     <div className="mt-3">

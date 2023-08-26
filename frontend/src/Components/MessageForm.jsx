@@ -2,12 +2,12 @@ import React, { useContext } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { Formik, Field } from 'formik';
-import authContext from './context';
-import { SocketContext } from './socketContext';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import filter from 'leo-profanity';
+import authContext from './context';
+import { SocketContext } from './socketContext';
 
 const MessageForm = () => {
   const { t } = useTranslation();
