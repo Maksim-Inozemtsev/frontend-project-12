@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import cn from 'classnames';
 import { useTranslation } from 'react-i18next';
-import { actions as channelsActions } from '../Slices/channelsSlice.js';
-import ModalRemoveChannel from './Modals/ModalRemove';
-import ModalRenameChannel from './Modals/ModalRename';
+import { actions as channelsActions } from '../slices/channelsSlice.js';
+import ModalRemoveChannel from './modals/ModalRemove';
+import ModalRenameChannel from './modals/ModalRename';
 
 const Channels = () => {
   const { t } = useTranslation();

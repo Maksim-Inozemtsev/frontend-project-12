@@ -8,7 +8,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from 'react-i18next';
 import { toast, ToastContainer } from 'react-toastify';
 import apiPath from '../../routes.js';
-import authContext from '../context';
+import authContext from '../AuthContext';
 import 'react-toastify/dist/ReactToastify.css';
 
 const { loginPage } = apiPath;

@@ -9,7 +9,7 @@ import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import authContext from '../context';
+import authContext from '../AuthContext';
 import apiPath from '../../routes.js';
 
 const { signupPage } = apiPath;

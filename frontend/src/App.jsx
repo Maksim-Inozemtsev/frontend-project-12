@@ -6,15 +6,15 @@ import {
 import { I18nextProvider } from 'react-i18next';
 import { Provider as RollbarProvider, ErrorBoundary } from '@rollbar/react';
 import i18next from './i18next';
-import LoginForm from './Components/Pages/LoginForm';
-import SignupForm from './Components/Pages/SignupForm';
-import NotFoundPage from './Components/Pages/NotFoundPage';
-import MainPage from './Components/Pages/MainPage';
-import { actions as messagesActions } from './Slices/messagesSlice.js';
-import { actions as channelsActions } from './Slices/channelsSlice.js';
-import authContext, { ContextProvider } from './Components/context';
-import { SocketContext, socket } from './Components/socketContext';
-import store from './Slices/store.js';
+import LoginForm from './components/pages/LoginForm';
+import SignupForm from './components/pages/SignupForm';
+import NotFoundPage from './components/pages/NotFoundPage';
+import MainPage from './components/pages/MainPage';
+import { actions as messagesActions } from './slices/messagesSlice.js';
+import { actions as channelsActions } from './slices/channelsSlice.js';
+import authContext, { ContextProvider } from './components/AuthContext';
+import { SocketContext, socket } from './components/socketContext';
+import store from './slices/store.js';
 import './App.css';
 
 socket.on('newMessage', (message) => {

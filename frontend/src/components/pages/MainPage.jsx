@@ -6,11 +6,11 @@ import {
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 import { toast, ToastContainer } from 'react-toastify';
-import authContext from '../context';
+import authContext from '../AuthContext';
 import apiPath from '../../routes.js';
-import { actions as channelsActions } from '../../Slices/channelsSlice.js';
-import { actions as messagesActions } from '../../Slices/messagesSlice.js';
-import ModalAddChannel from '../Modals/ModalAdd';
+import { actions as channelsActions } from '../../slices/channelsSlice.js';
+import { actions as messagesActions } from '../../slices/messagesSlice.js';
+import ModalAddChannel from '../modals/ModalAdd';
 import Channels from '../Channels';
 import Messages from '../Messages';
 import MessageForm from '../MessageForm';
