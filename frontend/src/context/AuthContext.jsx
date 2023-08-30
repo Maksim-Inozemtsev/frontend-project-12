@@ -1,11 +1,13 @@
-import { createContext, useState, useMemo } from 'react';
+import {
+  createContext, useState, useMemo, useEffect,
+} from 'react';
 
-const authContext = createContext(!!localStorage.getItem('user'));
+const authContext = createContext();
 
 export const ContextProvider = ({ children }) => {
-  const [loggedIn, setLoggedIn] = useState(false);
-  const [currentToken, setcurrentToken] = useState(null);
-  const [currentUser, setcurrentUser] = useState('');
+  const [loggedIn, setLoggedIn] = useState(!!localStorage.getItem('user'));
+  const [currentToken, setcurrentToken] = useState(localStorage.getItem('token') || null);
+  const [currentUser, setcurrentUser] = useState(localStorage.getItem('user') || '');
 
   const login = (token, user) => {
     localStorage.setItem('token', token);
@@ -19,11 +21,20 @@ export const ContextProvider = ({ children }) => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     setLoggedIn(false);
+    setcurrentToken(null);
+    setcurrentUser('');
   };
 
   const data = useMemo(() => ({
     loggedIn, currentToken, currentUser, login, logout,
   }), [loggedIn, currentToken, currentUser]);
+
+  useEffect(() => {
+    const storedLoggedIn = !!localStorage.getItem('user');
+    if (storedLoggedIn) {
+      setLoggedIn(true);
+    }
+  }, []);
 
   return (
     <authContext.Provider value={data}>

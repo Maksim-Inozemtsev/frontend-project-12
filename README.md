@@ -16,5 +16,3 @@ make install
 ```sh
 make start
 ```
-
-<a href='https://frontend-project-12-j01s.onrender.com'>Deployed project</a>

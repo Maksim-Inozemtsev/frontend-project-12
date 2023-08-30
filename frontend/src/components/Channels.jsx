@@ -3,8 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import cn from 'classnames';
 import { useTranslation } from 'react-i18next';
 import { actions as channelsActions } from '../slices/channelsSlice.js';
-import ModalRemoveChannel from './modals/ModalRemove';
-import ModalRenameChannel from './modals/ModalRename';
+import { actions as modalsActions } from '../slices/modalsSlice.js';
 
 const Channels = () => {
   const { t } = useTranslation();
@@ -12,19 +11,16 @@ const Channels = () => {
   const dispatch = useDispatch();
 
   const [openMenuId, setOpenMenuId] = useState(null);
-  const [showDeleteModalId, setShowDeleteModalId] = useState(false);
-  const [showRenameModalId, setShowRenameModalId] = useState(false);
 
   const toggleMenu = (id) => {
     setOpenMenuId(openMenuId === id ? null : id);
   };
 
-  const handleRename = () => {
-    setShowRenameModalId(true);
-  };
-
-  const handleDelete = () => {
-    setShowDeleteModalId(true);
+  const handleModal = (typechannel, idChannel) => {
+    dispatch(modalsActions.setShow(true));
+    dispatch(modalsActions.setType(typechannel));
+    dispatch(modalsActions.setChannelId(idChannel));
+    setOpenMenuId(null);
   };
 
   const handler = (id) => {
@@ -70,24 +66,8 @@ const Channels = () => {
                   data-popper-placement="bottom-end"
                   style={{ position: 'absolute', inset: '0px 0px auto auto', transform: 'translate(0px, 40px)' }}
                 >
-                  <button data-rr-ui-dropdown-item="" className="dropdown-item" type="button" tabIndex={0} onClick={() => handleDelete()}>{t('delete')}</button>
-                  <ModalRemoveChannel
-                    show={showDeleteModalId}
-                    channelId={channel.id}
-                    onHide={() => {
-                      setShowDeleteModalId(false);
-                      setOpenMenuId(null);
-                    }}
-                  />
-                  <button data-rr-ui-dropdown-item="" className="dropdown-item" type="button" tabIndex={0} onClick={() => handleRename()}>{t('rename')}</button>
-                  <ModalRenameChannel
-                    show={showRenameModalId}
-                    channelId={channel.id}
-                    onHide={() => {
-                      setShowRenameModalId(false);
-                      setOpenMenuId(null);
-                    }}
-                  />
+                  <button data-rr-ui-dropdown-item="" className="dropdown-item" type="button" tabIndex={0} onClick={() => handleModal('remove', channel.id)}>{t('delete')}</button>
+                  <button data-rr-ui-dropdown-item="" className="dropdown-item" type="button" tabIndex={0} onClick={() => handleModal('rename', channel.id)}>{t('rename')}</button>
                 </div>
                 )}
               </div>

@@ -11,7 +11,7 @@ const Messages = () => {
   const currentChannel = channels.find((item) => item.id === currentChannelId);
 
   return (
-    <div className="mt-3">
+    <>
       <div className="bg-light mb-4 p-3 shadow-sm small">
         <p className="m-0">
           <b>
@@ -21,17 +21,19 @@ const Messages = () => {
         </p>
         <span className="text-muted">{t('messages.key', { count: currentChannelMessages.length })}</span>
       </div>
-      {currentChannelMessages.map((message) => (
-        <div key={message.id}>
-          <b>
-            {message.username}
-            :
-          </b>
-          {' '}
-          {message.body}
-        </div>
-      ))}
-    </div>
+      <div id="messages-box" className="chat-messages overflow-auto px-5 ">
+        {currentChannelMessages.map((message) => (
+          <div key={message.id} className="text-break mb-2">
+            <b>
+              {message.username}
+              :
+            </b>
+            {' '}
+            {message.body}
+          </div>
+        ))}
+      </div>
+    </>
   );
 };
 

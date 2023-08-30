@@ -6,14 +6,14 @@ import {
 import { I18nextProvider } from 'react-i18next';
 import { Provider as RollbarProvider, ErrorBoundary } from '@rollbar/react';
 import i18next from './i18next';
-import LoginForm from './components/pages/LoginForm';
-import SignupForm from './components/pages/SignupForm';
-import NotFoundPage from './components/pages/NotFoundPage';
-import MainPage from './components/pages/MainPage';
+import LoginForm from './pages/LoginForm';
+import SignupForm from './pages/SignupForm';
+import NotFoundPage from './pages/NotFoundPage';
+import MainPage from './pages/MainPage';
 import { actions as messagesActions } from './slices/messagesSlice.js';
 import { actions as channelsActions } from './slices/channelsSlice.js';
-import authContext, { ContextProvider } from './components/AuthContext';
-import { SocketContext, socket } from './components/socketContext';
+import authContext, { ContextProvider } from './context/AuthContext';
+import { SocketContext, socket } from './context/socketContext';
 import store from './slices/store.js';
 import './App.css';
 
@@ -36,7 +36,7 @@ const UseOutlet = () => {
 };
 
 const rollbarConfig = {
-  accessToken: 'd6ec948d5561494f9834dca0c71be392',
+  accessToken: process.env.REACT_APP_ROLLBAR_TOKEN,
   environment: 'production',
 };
 
