@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import cn from 'classnames';
 import { useTranslation } from 'react-i18next';
@@ -9,6 +9,7 @@ const Channels = () => {
   const { t } = useTranslation();
   const { channels, currentChannelId } = useSelector((state) => state.channelsReducer);
   const dispatch = useDispatch();
+  const channelsBoxRef = useRef(null);
 
   const [openMenuId, setOpenMenuId] = useState(null);
 
@@ -28,8 +29,12 @@ const Channels = () => {
     setOpenMenuId(null);
   };
 
+  useEffect(() => {
+    channelsBoxRef.current?.lastChild?.scrollIntoView({ behavior: 'smooth' });
+  }, [channels]);
+
   return (
-    <ul id="channels-box" className="nav flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block">
+    <ul id="channels-box" className="nav flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block" ref={channelsBoxRef}>
       {channels.map((channel) => {
         const buttonClass = cn('w-100', 'rounded-0', 'text-start', 'btn', {
           'btn-secondary': channel.id === currentChannelId,

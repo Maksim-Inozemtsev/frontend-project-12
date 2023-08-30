@@ -1,4 +1,4 @@
-import React from 'react';
+import { useRef, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
@@ -6,9 +6,14 @@ const Messages = () => {
   const { t } = useTranslation();
   const { channels, currentChannelId } = useSelector((state) => state.channelsReducer);
   const { messages } = useSelector((state) => state.messagesReducer);
+  const messagesBoxRef = useRef(null);
   const currentChannelMessages = messages
     .filter((el) => el.channelId === currentChannelId?.toString());
   const currentChannel = channels.find((item) => item.id === currentChannelId);
+
+  useEffect(() => {
+    messagesBoxRef.current?.lastChild?.scrollIntoView({ behavior: 'smooth' });
+  }, [currentChannelMessages]);
 
   return (
     <>
@@ -21,7 +26,7 @@ const Messages = () => {
         </p>
         <span className="text-muted">{t('messages.key', { count: currentChannelMessages.length })}</span>
       </div>
-      <div id="messages-box" className="chat-messages overflow-auto px-5 ">
+      <div id="messages-box" className="chat-messages overflow-auto px-5 " ref={messagesBoxRef}>
         {currentChannelMessages.map((message) => (
           <div key={message.id} className="text-break mb-2">
             <b>

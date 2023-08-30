@@ -31,6 +31,7 @@ const MessageForm = () => {
     const newMessage = { body: filteredMessage, channelId: `${currentChannelId}`, username: `${currentUser}` };
     try {
       await handleSocket('newMessage', newMessage);
+      inputRef.current.focus();
     } catch (error) {
       notify(error.message);
     }
@@ -54,7 +55,7 @@ const MessageForm = () => {
                 placeholder={t('messagePlaceholder')}
                 value={values.message}
                 onChange={handleChange}
-                ref={inputRef}
+                innerRef={inputRef}
               />
               <Button type="submit" variant="primary" className="btn btn-group-vertical" disabled={isSubmitting || !values.message.trim()}>
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="20" height="20" fill="currentColor">
