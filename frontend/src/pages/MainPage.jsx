@@ -12,7 +12,7 @@ import apiPath from '../routes.js';
 import { actions as channelsActions } from '../slices/channelsSlice.js';
 import { actions as messagesActions } from '../slices/messagesSlice.js';
 import { actions as modalsActions } from '../slices/modalsSlice.js';
-import ModalComponent from '../components/ModalComponent';
+import ModalComponent from '../components/Modals/index.jsx';
 import Channels from '../components/Channels';
 import Messages from '../components/Messages';
 import MessageForm from '../components/MessageForm';
