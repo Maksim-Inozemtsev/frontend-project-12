@@ -48,10 +48,8 @@ const ModalComponent = () => {
         if (!channels.some((el) => el.name === channelName)) {
           try {
             if (type === 'add') {
-              await handleSocket('newChannel', data);
-              const newChannel = channels[channels.length - 1];
-              const newChannelId = newChannel.id;
-              dispatch(channelsActions.setCurrentChannel(newChannelId));
+              const res = await handleSocket('newChannel', data);
+              dispatch(channelsActions.setCurrentChannel(res.id));
             } else {
               await handleSocket('renameChannel', data);
             }
