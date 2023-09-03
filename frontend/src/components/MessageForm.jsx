@@ -7,16 +7,14 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import filter from 'leo-profanity';
 import authContext from '../context/AuthContext';
-import { handleSocket } from '../context/socketContext';
+import SocketContext from '../context/socketContext';
 
 const MessageForm = () => {
   const { t } = useTranslation();
   const { currentChannelId } = useSelector((state) => state.channelsReducer);
-  const context = useContext(authContext);
-  const { currentUser } = context;
+  const { currentUser } = useContext(authContext);
+  const { handleSocket } = useContext(SocketContext);
   const notify = (e) => toast(e);
-  filter.add(filter.getDictionary('en'));
-  filter.add(filter.getDictionary('ru'));
 
   const inputRef = useRef(null);
 
@@ -31,11 +29,11 @@ const MessageForm = () => {
     const newMessage = { body: filteredMessage, channelId: `${currentChannelId}`, username: `${currentUser}` };
     try {
       await handleSocket('newMessage', newMessage);
-      inputRef.current.focus();
+      action.resetForm();
     } catch (error) {
       notify(error.message);
     }
-    action.resetForm();
+    inputRef.current.focus();
   };
 
   return (

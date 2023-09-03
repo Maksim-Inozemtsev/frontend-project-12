@@ -48,6 +48,9 @@ const MainPage = () => {
       } catch (error) {
         setLoading(false);
         notify(error.message);
+        if (error.response && error.response.status === 401) {
+          logout();
+        }
       }
     };
 

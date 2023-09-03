@@ -46,7 +46,17 @@ const Channels = () => {
         return (
           <li key={channel.id} className="nav-item w-100">
             <div role="group" className="d-flex dropdown btn-group">
-              <button type="button" className={buttonClass} onClick={() => handler(channel.id)}>
+              <button
+                type="button"
+                className={buttonClass}
+                onClick={() => handler(channel.id)}
+                style={{
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  maxWidth: '100%',
+                }}
+              >
                 <span className="me-1">#</span>
                 {channel.name}
               </button>
