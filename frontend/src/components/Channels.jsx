@@ -1,5 +1,8 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import {
+  Dropdown, ButtonGroup,
+} from 'react-bootstrap';
 import cn from 'classnames';
 import { useTranslation } from 'react-i18next';
 import { actions as channelsActions } from '../slices/channelsSlice.js';
@@ -11,22 +14,14 @@ const Channels = () => {
   const dispatch = useDispatch();
   const channelsBoxRef = useRef(null);
 
-  const [openMenuId, setOpenMenuId] = useState(null);
-
-  const toggleMenu = (id) => {
-    setOpenMenuId(openMenuId === id ? null : id);
-  };
-
   const handleModal = (typechannel, idChannel) => {
     dispatch(modalsActions.setShow(true));
     dispatch(modalsActions.setType(typechannel));
     dispatch(modalsActions.setChannelId(idChannel));
-    setOpenMenuId(null);
   };
 
   const handler = (id) => {
     dispatch(channelsActions.setCurrentChannel(id));
-    setOpenMenuId(null);
   };
 
   useEffect(() => {
@@ -39,9 +34,9 @@ const Channels = () => {
         const buttonClass = cn('w-100', 'rounded-0', 'text-start', 'btn', {
           'btn-secondary': channel.id === currentChannelId,
         });
-        const dropdownButtonClass = cn('flex-grow-0', 'dropdown-toggle', 'dropdown-toggle-split', 'btn', {
-          'btn-secondary': channel.id === currentChannelId,
-        });
+        const dropdownButtonClass = (id) => (id === currentChannelId
+          ? 'secondary'
+          : 'light');
 
         return (
           <li key={channel.id} className="nav-item w-100">
@@ -61,31 +56,19 @@ const Channels = () => {
                 {channel.name}
               </button>
               {channel.removable && (
-              <div className="dropdown">
-                <button
-                  className={dropdownButtonClass}
-                  type="button"
-                  id={`dropdownMenuButton-${channel.id}`}
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                  onClick={() => toggleMenu(channel.id)}
+              <Dropdown key={`dropdownMenuButton-${channel.id}`} as={ButtonGroup} className="d-flex">
+                <Dropdown.Toggle
+                  className="flex-grow-0"
+                  variant={dropdownButtonClass(channel.id)}
+                  split
                 >
-                  <span className="visually-hidden">{t('modal.manageChannel')}</span>
-                </button>
-                {openMenuId === channel.id && (
-                <div
-                  aria-labelledby="react-aria3209376880-1"
-                  className="dropdown-menu show"
-                  data-popper-reference-hidden="false"
-                  data-popper-escaped="false"
-                  data-popper-placement="bottom-end"
-                  style={{ position: 'absolute', inset: '0px 0px auto auto', transform: 'translate(0px, 40px)' }}
-                >
-                  <button data-rr-ui-dropdown-item="" className="dropdown-item" type="button" tabIndex={0} onClick={() => handleModal('remove', channel.id)}>{t('delete')}</button>
-                  <button data-rr-ui-dropdown-item="" className="dropdown-item" type="button" tabIndex={0} onClick={() => handleModal('rename', channel.id)}>{t('rename')}</button>
-                </div>
-                )}
-              </div>
+                  <span className="visually-hidden">{t('chat.channels.manageChannels')}</span>
+                </Dropdown.Toggle>
+                <Dropdown.Menu style={{ position: 'absolute', inset: '0px 0px auto auto', transform: 'translate(0px, 40px)' }}>
+                  <Dropdown.Item onClick={() => handleModal('remove', channel.id)}>{t('delete')}</Dropdown.Item>
+                  <Dropdown.Item onClick={() => handleModal('rename', channel.id)}>{t('rename')}</Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
               )}
             </div>
           </li>

@@ -31,7 +31,12 @@ const ModalRename = () => {
 
   useEffect(() => {
     if (show && inputRef.current) {
+      const currentChannel = channels.find((item) => item.id === channelId);
+      setChannelName(currentChannel.name);
       inputRef.current.focus();
+      setTimeout(() => {
+        inputRef.current.select();
+      }, 0);
     }
   }, [show]);
 
