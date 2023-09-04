@@ -11,7 +11,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import filter from 'leo-profanity';
 import { actions as modalsActions } from '../../slices/modalsSlice.js';
 import { actions as channelsActions } from '../../slices/channelsSlice.js';
-import SocketContext from '../../context/socketContext';
+import SocketContext from '../../context/SocketContext';
 
 const ModalAdd = () => {
   const { t } = useTranslation();

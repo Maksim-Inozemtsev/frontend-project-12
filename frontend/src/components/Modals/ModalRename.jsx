@@ -10,7 +10,7 @@ import * as yup from 'yup';
 import 'react-toastify/dist/ReactToastify.css';
 import filter from 'leo-profanity';
 import { actions as modalsActions } from '../../slices/modalsSlice.js';
-import SocketContext from '../../context/socketContext';
+import SocketContext from '../../context/SocketContext';
 
 const ModalRename = () => {
   const { t } = useTranslation();

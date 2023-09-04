@@ -14,7 +14,7 @@ import MainPage from './pages/MainPage';
 import { actions as messagesActions } from './slices/messagesSlice.js';
 import { actions as channelsActions } from './slices/channelsSlice.js';
 import authContext, { AuthContextProvider } from './context/AuthContext';
-import { SocketContextProvider, socket } from './context/socketContext';
+import { SocketContextProvider, socket } from './context/SocketContext';
 import store from './slices/store.js';
 import './App.css';
 

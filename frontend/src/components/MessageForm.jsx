@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import filter from 'leo-profanity';
 import authContext from '../context/AuthContext';
-import SocketContext from '../context/socketContext';
+import SocketContext from '../context/SocketContext';
 
 const MessageForm = () => {
   const { t } = useTranslation();

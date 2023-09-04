@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { actions as modalsActions } from '../../slices/modalsSlice.js';
-import SocketContext from '../../context/socketContext';
+import SocketContext from '../../context/SocketContext';
 
 const ModalRemove = () => {
   const { t } = useTranslation();
