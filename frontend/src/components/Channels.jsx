@@ -62,7 +62,7 @@ const Channels = () => {
                   variant={dropdownButtonClass(channel.id)}
                   split
                 >
-                  <span className="visually-hidden">{t('chat.channels.manageChannels')}</span>
+                  <span className="visually-hidden">{t('modal.manageChannel')}</span>
                 </Dropdown.Toggle>
                 <Dropdown.Menu style={{ position: 'absolute', inset: '0px 0px auto auto', transform: 'translate(0px, 40px)' }}>
                   <Dropdown.Item onClick={() => handleModal('remove', channel.id)}>{t('delete')}</Dropdown.Item>
