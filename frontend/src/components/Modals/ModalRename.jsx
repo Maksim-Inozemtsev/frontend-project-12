@@ -41,7 +41,7 @@ const ModalRename = () => {
   }, [show]);
 
   const onHide = () => {
-    dispatch(modalsActions.setShow(false));
+    dispatch(modalsActions.closeModal());
   };
 
   const handleRename = async () => {

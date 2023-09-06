@@ -37,7 +37,7 @@ const ModalAdd = () => {
   }, [show]);
 
   const onHide = () => {
-    dispatch(modalsActions.setShow(false));
+    dispatch(modalsActions.closeModal());
   };
 
   const handleAdd = async () => {

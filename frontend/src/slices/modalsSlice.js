@@ -12,16 +12,17 @@ const modalsSlice = createSlice({
   name: 'modals',
   initialState,
   reducers: {
-    setShow(state, { payload }) {
-      state.show = payload;
+    openModal(state, { payload }) {
+      const { type, channelId } = payload;
+      state.show = true;
+      state.type = type;
+      state.channelId = channelId;
     },
 
-    setType(state, { payload }) {
-      state.type = payload;
-    },
-
-    setChannelId(state, { payload }) {
-      state.channelId = payload;
+    closeModal(state) {
+      state.show = false;
+      state.type = null;
+      state.channelId = null;
     },
   },
 });

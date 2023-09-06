@@ -1,5 +1,5 @@
 import { Formik, Field, ErrorMessage } from 'formik';
-import { Navigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import React, { useContext, useState, useEffect } from 'react';
 import * as Yup from 'yup';
 import axios from 'axios';
@@ -11,7 +11,7 @@ import apiPath from '../routes.js';
 import authContext from '../context/AuthContext';
 import 'react-toastify/dist/ReactToastify.css';
 
-const { loginPage } = apiPath;
+const { loginPath, pages } = apiPath;
 
 const LoginForm = () => {
   const { t } = useTranslation();
@@ -21,7 +21,9 @@ const LoginForm = () => {
     password: Yup.string().required(t('errors.passwordRequired')),
   });
 
-  const [redirect, setRedirect] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
+
   const [signed, setSigned] = useState(true);
   const [netWorkError, setNetWorkError] = useState(false);
   const notify = () => toast(netWorkError);
@@ -36,14 +38,15 @@ const LoginForm = () => {
 
   const myHandleSubmit = async (values) => {
     try {
-      const response = await axios.post(loginPage(), {
+      const response = await axios.post(loginPath(), {
         username: values.username,
         password: values.password,
       });
 
       const { token, username } = response.data;
       login(token, username);
-      setRedirect(true);
+      const { from } = location.state || { from: { pathname: pages.mainPage } };
+      navigate(from);
     } catch (error) {
       if (error.response?.status === 401) {
         setSigned(false);
@@ -53,10 +56,6 @@ const LoginForm = () => {
     }
   };
 
-  if (redirect) {
-    return <Navigate to="/" />;
-  }
-
   return (
     <div className="h-100 bg-light">
       <div className="h-100">
@@ -64,7 +63,7 @@ const LoginForm = () => {
           <div className="d-flex flex-column h-100">
             <nav className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
               <div className="container">
-                <a className="navbar-brand" href="/">{t('title')}</a>
+                <a className="navbar-brand" href={pages.mainPage}>{t('title')}</a>
               </div>
             </nav>
             <div className="container-fluid h-100">
@@ -107,7 +106,7 @@ const LoginForm = () => {
                       <div className="text-center">
                         <span>{t('noAcc')}</span>
                         {' '}
-                        <a href="/signup">{t('signUpTitle')}</a>
+                        <a href={pages.signupPage}>{t('signUpTitle')}</a>
                       </div>
                     </div>
                   </div>

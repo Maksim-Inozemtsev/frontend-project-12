@@ -25,7 +25,7 @@ const ModalRemove = () => {
   }, [show]);
 
   const onHide = () => {
-    dispatch(modalsActions.setShow(false));
+    dispatch(modalsActions.closeModal());
   };
 
   const handleRemove = async () => {

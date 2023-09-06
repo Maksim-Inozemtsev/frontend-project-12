@@ -24,6 +24,7 @@ export default {
       key_many: '{{count}} сообщений',
     },
     messagePlaceholder: 'Введите сообщение...',
+    messageLabel: 'Новое сообщение',
     modal: {
       addChannel: 'Добавить канал',
       addChannelName: 'Имя канала',

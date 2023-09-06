@@ -45,7 +45,7 @@ const MessageForm = () => {
           <Form className="py-1 border rounded-2" onSubmit={handleSubmit}>
             <div className="input-group has-validation">
               <Field
-                aria-label="Новое сообщение"
+                aria-label={t('messageLabel')}
                 className="border-0 p-0 ps-2 form-control"
                 name="message"
                 type="text"

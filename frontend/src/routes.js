@@ -1,7 +1,13 @@
 const api = '/api/v1/';
 
 export default {
-  loginPage: () => [api, 'login'].join(''),
-  getData: () => [api, 'data'].join(''),
-  signupPage: () => [api, 'signup'].join(''),
+  loginPath: () => [api, 'login'].join(''),
+  getDataPath: () => [api, 'data'].join(''),
+  signupPath: () => [api, 'signup'].join(''),
+  pages: {
+    mainPage: '/',
+    loginPage: '/login',
+    signupPage: '/signup',
+    notFoundPage: '*',
+  },
 };

@@ -16,20 +16,10 @@ import { actions as channelsActions } from './slices/channelsSlice.js';
 import authContext, { AuthContextProvider } from './context/AuthContext';
 import { SocketContextProvider, socket } from './context/SocketContext';
 import store from './slices/store.js';
+import apiPath from './routes.js';
 import './App.css';
 
-socket.on('newMessage', (message) => {
-  store.dispatch(messagesActions.setMessage(message));
-});
-socket.on('newChannel', (channel) => {
-  store.dispatch(channelsActions.addChannel(channel));
-});
-socket.on('removeChannel', (channel) => {
-  store.dispatch(channelsActions.removeChannel(channel));
-});
-socket.on('renameChannel', (channel) => {
-  store.dispatch(channelsActions.renameChannel(channel));
-});
+const { pages } = apiPath;
 
 const UseOutlet = () => {
   const { loggedIn } = useContext(authContext);
@@ -45,6 +35,19 @@ const App = () => {
   filter.add(filter.getDictionary('en'));
   filter.add(filter.getDictionary('ru'));
 
+  socket.on('newMessage', (message) => {
+    store.dispatch(messagesActions.setMessage(message));
+  });
+  socket.on('newChannel', (channel) => {
+    store.dispatch(channelsActions.addChannel(channel));
+  });
+  socket.on('removeChannel', (channel) => {
+    store.dispatch(channelsActions.removeChannel(channel));
+  });
+  socket.on('renameChannel', (channel) => {
+    store.dispatch(channelsActions.renameChannel(channel));
+  });
+
   return (
     <RollbarProvider config={rollbarConfig}>
       <ErrorBoundary>
@@ -54,12 +57,12 @@ const App = () => {
               <SocketContextProvider>
                 <AuthContextProvider>
                   <Routes>
-                    <Route path="/" element={<UseOutlet />}>
+                    <Route path={pages.mainPage} element={<UseOutlet />}>
                       <Route path="" element={<MainPage />} />
                     </Route>
-                    <Route path="/login" element={<LoginForm />} />
-                    <Route path="/signup" element={<SignupForm />} />
-                    <Route path="*" element={<NotFoundPage />} />
+                    <Route path={pages.loginPage} element={<LoginForm />} />
+                    <Route path={pages.signupPage} element={<SignupForm />} />
+                    <Route path={pages.notFoundPage} element={<NotFoundPage />} />
                   </Routes>
                 </AuthContextProvider>
               </SocketContextProvider>

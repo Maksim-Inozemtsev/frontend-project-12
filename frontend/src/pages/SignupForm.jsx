@@ -12,7 +12,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import authContext from '../context/AuthContext';
 import apiPath from '../routes.js';
 
-const { signupPage } = apiPath;
+const { signupPath, pages } = apiPath;
 
 const SignupForm = () => {
   const { t } = useTranslation();
@@ -47,7 +47,7 @@ const SignupForm = () => {
 
   const myHandleSubmit = async (values) => {
     try {
-      const response = await axios.post(signupPage(), {
+      const response = await axios.post(signupPath(), {
         username: values.username,
         password: values.password,
       });
@@ -66,14 +66,14 @@ const SignupForm = () => {
   };
 
   if (redirect) {
-    return <Navigate to="/" />;
+    return <Navigate to={pages.mainPage} />;
   }
 
   return (
     <div className="d-flex flex-column h-100 bg-light">
       <nav className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
         <div className="container">
-          <a className="navbar-brand" href="/">{t('title')}</a>
+          <a className="navbar-brand" href={pages.mainPage}>{t('title')}</a>
         </div>
       </nav>
       <div className="container-fluid h-100">

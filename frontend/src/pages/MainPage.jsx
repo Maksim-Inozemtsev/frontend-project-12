@@ -18,7 +18,7 @@ import Messages from '../components/Messages';
 import MessageForm from '../components/MessageForm';
 import 'react-toastify/dist/ReactToastify.css';
 
-const { getData } = apiPath;
+const { getDataPath, pages } = apiPath;
 
 const MainPage = () => {
   const { t } = useTranslation();
@@ -31,7 +31,7 @@ const MainPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const { data } = await axios.get(getData(), {
+        const { data } = await axios.get(getDataPath(), {
           headers: {
             Authorization: `Bearer ${currentToken}`,
           },
@@ -58,8 +58,7 @@ const MainPage = () => {
   }, []);
 
   const handleModal = () => {
-    dispatch(modalsActions.setShow(true));
-    dispatch(modalsActions.setType('add'));
+    dispatch(modalsActions.openModal({ type: 'add', channelId: null }));
   };
 
   return (
@@ -77,7 +76,7 @@ const MainPage = () => {
         <Container fluid id="chat" className="d-flex flex-column h-100 bg-light">
           <Navbar className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
             <Container>
-              <Navbar.Brand as="a" href="/">{t('title')}</Navbar.Brand>
+              <Navbar.Brand as="a" href={pages.mainPage}>{t('title')}</Navbar.Brand>
               <Button type="button" className="btn btn-primary" onClick={logout}>{t('logOut')}</Button>
             </Container>
           </Navbar>

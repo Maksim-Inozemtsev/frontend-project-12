@@ -15,9 +15,7 @@ const Channels = () => {
   const channelsBoxRef = useRef(null);
 
   const handleModal = (typechannel, idChannel) => {
-    dispatch(modalsActions.setShow(true));
-    dispatch(modalsActions.setType(typechannel));
-    dispatch(modalsActions.setChannelId(idChannel));
+    dispatch(modalsActions.openModal({ type: typechannel, channelId: idChannel }));
   };
 
   const handler = (id) => {
