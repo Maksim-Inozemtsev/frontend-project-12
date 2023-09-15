@@ -16,5 +16,3 @@ make install
 ```sh
 make start
 ```
-
-<a href='https://frontend-project-12-production-f399.up.railway.app/'>Deployed project</a>
